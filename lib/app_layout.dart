@@ -1,3 +1,4 @@
+import 'package:better_io/features/tasks/presentation/screens/calendars_screen.dart';
 import 'package:better_io/shared/widgets/responsive_navigation.dart';
 import 'package:flutter/material.dart';
 
@@ -32,7 +33,7 @@ class AppLayoutState extends State<AppLayout> {
     {
       'title': 'Schedule',
       'tabs': [
-        {'widget': const Example1Screen(), 'icon': Icons.extension, 'title': 'Calendars Tab'},
+        {'widget': const CalendarsScreen(), 'icon': Icons.extension, 'title': 'Calendars Tab'},
         {'widget': const Example2Screen(), 'icon': Icons.extension, 'title': 'Challanges Tab'},
         {'widget': const Example3Screen(), 'icon': Icons.analytics, 'title': 'Analysis Tab'},
       ],

@@ -11,6 +11,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+
+  syncfusion_flutter_calendar: ^29.1.38
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
   cupertino_icons: ^1.0.8
 
 dev_dependencies:
