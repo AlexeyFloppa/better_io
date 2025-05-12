@@ -1,20 +1,9 @@
-// Flutter and third-party imports
-import 'package:better_io/features/tasks/domain/entities/task.dart';
-import 'package:better_io/features/tasks/domain/helpers/repeat_helper.dart';
-import 'package:better_io/features/tasks/domain/usecases/hive/get_nearest_to_date_hive_tasks.dart';
 import 'package:flutter/material.dart';
-import 'package:syncfusion_flutter_calendar/calendar.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import 'dart:developer'; // For debugging
+import 'package:better_io/features/tasks/presentation/screens/daily_calendar_screen.dart';
+import 'package:better_io/features/tasks/presentation/screens/monthly_calendars_scree.dart';
+import 'package:better_io/features/tasks/presentation/screens/weekly_calendars_screen.dart';
+import 'package:better_io/features/tasks/presentation/screens/schedule_calendar_screen.dart';
 
-// Feature-specific imports
-import 'package:better_io/features/tasks/domain/usecases/hive/get_hive_task.dart';
-import 'package:better_io/features/tasks/data/data_sources/task_data_source.dart';
-import 'package:better_io/features/tasks/data/models/hive_task_model.dart';
-import 'package:better_io/features/tasks/data/repositories/hive_task_repository.dart';
-import 'package:better_io/features/tasks/presentation/screens/manage_task_screen.dart';
-
-// Main widget for the calendar screen
 class CalendarsScreen extends StatefulWidget {
   const CalendarsScreen({Key? key}) : super(key: key);
 
@@ -22,101 +11,54 @@ class CalendarsScreen extends StatefulWidget {
   State<CalendarsScreen> createState() => _CalendarsScreenState();
 }
 
-class _CalendarsScreenState extends State<CalendarsScreen> with RouteAware {
-  // Variables
-  TaskDataSource? _taskDataSource; // Nullable to handle uninitialized state
-  late final GetAllTasksUseCase _getAllTasksUseCase;
-  late final GetTasksByDateUseCase _getTasksByDateUseCase;
-  late final RepeatHelper _repeatHelper; // Assuming this is defined somewhere
+class _CalendarsScreenState extends State<CalendarsScreen> with SingleTickerProviderStateMixin {
+  late TabController _tabController;
 
-  // Lifecycle: Initialize the screen
   @override
   void initState() {
     super.initState();
-    log('CalendarsScreen initialized');
-    _initializeUseCase(); // Initialize domain logic
-    _initializeDataSource(); // Load data
-
+    _tabController = TabController(length: 5, vsync: this); // Updated length to 5
   }
 
-  // Initialize the use case (domain logic)
-  void _initializeUseCase() {
-    final taskBox = Hive.box<HiveTaskModel>('tasks'); // Assume the box is already opened
-    final repository = HiveTaskRepository(taskBox);
-    _repeatHelper = RepeatHelper(); // Initialize the repeat helper
-    // _getAllTasksUseCase = GetAllTasksUseCase(repository);
-    _getTasksByDateUseCase = GetTasksByDateUseCase(repository, _repeatHelper);
-
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
   }
 
-  // Load tasks and map them to calendar appointments
-  Future<void> _initializeDataSource() async {
-    // final tasks = await _getTasksByDateUseCase.execute(taskAmount: 20);
-    List<Task> tasks = [];
-
-    setState(() {
-      _taskDataSource = TaskDataSource(tasks, _getTasksByDateUseCase);
-      _taskDataSource!.handleLoadMore(DateTime.now(), DateTime.now().add(const Duration(days: 30)));
-    });
-  }
-
-  // Build the UI
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _taskDataSource == null
-          ? const Center(child: CircularProgressIndicator()) // Show loading indicator
-          : _buildCalendar(),
-      floatingActionButton: _buildFloatingActionButton(),
-    );
-  }
-
-  // Build the calendar widget
-  Widget _buildCalendar() {
-    return SfCalendar(
-      headerHeight: 0,
-      scheduleViewSettings: const ScheduleViewSettings(
-        hideEmptyScheduleWeek: true,
-        monthHeaderSettings: MonthHeaderSettings(height: 0),
-        weekHeaderSettings: WeekHeaderSettings(height: 0),
+      body: Column(
+        children: [
+          // TODO: Move tab logic into app navigation instead of handling it here.
+          TabBar(
+            controller: _tabController,
+            tabs: const [
+              Tab(text: 'Schedule'),
+              Tab(text: 'Daily'),
+              Tab(text: 'Weekly'),
+              Tab(text: 'Monthly'),
+              Tab(text: 'List'),
+            ],
+            labelColor: Theme.of(context).textTheme.bodyLarge?.color,
+            unselectedLabelColor: Theme.of(context).textTheme.bodyMedium?.color,
+            indicatorColor: Theme.of(context).colorScheme.primary,
+          ),
+          Expanded(
+            child: TabBarView(
+              controller: _tabController,
+              children: const [
+                ScheduleCalendarScreen(),
+                DailyCalendarScreen(),
+                WeeklyCalendarScreen(),
+                MonthlyCalendarScreen(),
+                Center(child: Text('List View')),
+              ],
+            ),
+          ),
+        ],
       ),
-      view: CalendarView.schedule,
-      dataSource: _taskDataSource,
-      loadMoreWidgetBuilder: _buildLoadMoreWidget,
-      
     );
   }
-
-  // Build the floating action button
-  Widget _buildFloatingActionButton() {
-    return FloatingActionButton(
-      onPressed: _onAddTaskPressed,
-      child: const Icon(Icons.add),
-    );
-  }
-
-  // Handle the "Add Task" button press
-  void _onAddTaskPressed() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const ManageTaskScreen()),
-    ).then((_) {
-      _initializeDataSource(); // Reload data when returning
-    });
-  }
-
-  Widget _buildLoadMoreWidget(BuildContext context, LoadMoreCallback loadMoreAppointments) {
-  return FutureBuilder<void>(
-    future: loadMoreAppointments(),
-    builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
-      return const Center(
-        child: Padding(
-          padding: EdgeInsets.all(16),
-          child: CircularProgressIndicator(),
-        ),
-      );
-    },
-  );
-}
-
 }
