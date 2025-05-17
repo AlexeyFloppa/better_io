@@ -12,7 +12,7 @@ class TaskDataSource extends CalendarDataSource {
   /// Constructor to initialize the data source with a list of appointments.
   TaskDataSource(List<Task> tasks, this.getTasksByDateUseCase) {
     appointments = tasks.map(_taskToAppointment).toList();
-    this.appointments = appointments;
+    appointments = appointments;
   }
 
   /// Converts a `Task` entity into an `Appointment` object.

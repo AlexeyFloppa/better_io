@@ -17,6 +17,7 @@ dependencies:
   hive_flutter: ^1.1.0
   cupertino_icons: ^1.0.8
   flutter_launcher_icons: ^0.14.3
+  provider: ^6.1.5
 
 dev_dependencies:
   flutter_test:

@@ -1,6 +1,8 @@
-import 'package:better_io/app_layout.dart';
+import 'package:better_io/features/navigation/presentation/widgets/adaptive_layout.dart';
 import 'package:flutter/material.dart';
 import 'core/theme/app_theme.dart';
+import 'package:provider/provider.dart';
+import 'features/navigation/domain/nav_controller.dart';
 
 final RouteObserver<ModalRoute> routeObserver = RouteObserver<ModalRoute>();
 
@@ -15,7 +17,10 @@ class App extends StatelessWidget {
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
       themeMode: ThemeMode.system, // Use system theme preference
-      home: AppLayout(),
+      home: ChangeNotifierProvider(
+        create: (_) => NavController(),
+        child: AdaptiveLayout(),
+      ),
       navigatorObservers: [routeObserver], // Add RouteObserver here
     );
   }

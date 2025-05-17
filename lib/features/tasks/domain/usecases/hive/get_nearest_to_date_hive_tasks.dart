@@ -55,7 +55,7 @@ class GetTasksByDateUseCase {
     for (final task in tasks) {
       if (task.isRecurring) {
         _processRecurringTask(task, startDate, taskDates);
-      } else if (task.startDate.isAfter(startDate)) {
+      } else if (!task.startDate.isBefore(startDate)) {
         taskDates.add({
           'task': task,
           'date': task.startDate,

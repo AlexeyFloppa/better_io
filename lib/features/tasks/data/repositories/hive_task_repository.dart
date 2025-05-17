@@ -1,3 +1,5 @@
+// ignore_for_file: unrelated_type_equality_checks
+
 import 'package:better_io/features/tasks/domain/repositories/task_repository.dart';
 import 'package:better_io/features/tasks/domain/entities/task.dart';
 import 'package:hive/hive.dart';

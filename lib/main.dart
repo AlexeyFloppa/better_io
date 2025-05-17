@@ -19,7 +19,8 @@ void main() async {
 
   // Open the Hive box for tasks.
     final taskBox = await Hive.openBox<HiveTaskModel>('tasks');
-  runApp(App()); // Wrap MyApp with ProviderScope
+  runApp(const App());
+
 }
 
 
