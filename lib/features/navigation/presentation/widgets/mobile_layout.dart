@@ -36,6 +36,7 @@ class MobileLayout extends StatelessWidget {
       ],
       ),
       bottomNavigationBar: const BottomModuleNav(),
+      floatingActionButton: currentModule.bottomButton,
     );
   }
 }

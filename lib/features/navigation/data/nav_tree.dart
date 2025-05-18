@@ -1,6 +1,12 @@
 import 'package:better_io/features/example_screens.dart';
 
 import 'package:better_io/features/home/home_screen.dart';
+import 'package:better_io/features/tasks/presentation/screens/calendars/daily_calendar_screen.dart';
+import 'package:better_io/features/tasks/presentation/screens/calendars/monthly_calendars_screen.dart';
+import 'package:better_io/features/tasks/presentation/screens/calendars/schedule_calendar_screen.dart';
+import 'package:better_io/features/tasks/presentation/screens/calendars/weekly_calendars_screen.dart';
+import 'package:better_io/features/tasks/presentation/screens/manage_task/manage_task_screen.dart';
+import 'package:better_io/shared/widgets/fab_button.dart';
 import 'package:flutter/material.dart';
 
 import '../domain/models/section_nav_data.dart';
@@ -43,10 +49,19 @@ final List<SectionNavData> appSections = [
         title: 'Calendar',
         icon: Icons.calendar_today,
         submodules: [
-          SubmoduleNavData(id: 'tasks-daily-calendar', title: 'Daily', icon: Icons.calendar_view_day, screen: ExampleScreen1()),
-          SubmoduleNavData(id: 'tasks-weekly-calendar', title: 'Weekly', icon: Icons.calendar_view_week, screen: ExampleScreen2()),
-          SubmoduleNavData(id: 'tasks-monthly-calendar', title: 'Monthly', icon: Icons.calendar_view_month, screen: ExampleScreen3()),
+          SubmoduleNavData(id: 'tasks-schedule-calendar', title: 'Schedule', icon: Icons.schedule, screen: ScheduleCalendarScreen()),
+          SubmoduleNavData(id: 'tasks-daily-calendar', title: 'Daily', icon: Icons.calendar_view_day, screen: DailyCalendarScreen()),
+          SubmoduleNavData(id: 'tasks-weekly-calendar', title: 'Weekly', icon: Icons.calendar_view_week, screen: WeeklyCalendarScreen()),
+          SubmoduleNavData(id: 'tasks-monthly-calendar', title: 'Monthly', icon: Icons.calendar_view_month, screen: MonthlyCalendarScreen()),
         ],
+        //TODO: replace or add FAB Button to sections,I guess this is the wrong place to add the FAB button, because it will be added to only one module instead of all modules
+        bottomButton: FABButton(
+          onTap: (context) {
+            Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => ManageTaskScreen()),
+            );
+          },
+        )
       ),
       ModuleNavData(
         id: 'tasks-challenges',

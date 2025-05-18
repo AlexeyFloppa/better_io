@@ -11,7 +11,6 @@ import 'dart:developer'; // For debugging
 import 'package:better_io/features/tasks/data/data_sources/task_data_source.dart';
 import 'package:better_io/features/tasks/data/models/hive_task_model.dart';
 import 'package:better_io/features/tasks/data/repositories/hive_task_repository.dart';
-import 'package:better_io/features/tasks/presentation/screens/manage_task/manage_task_screen.dart';
 
 // Main widget for the weekly calendar screen
 class WeeklyCalendarScreen extends StatefulWidget {
@@ -63,7 +62,6 @@ class _WeeklyCalendarScreenState extends State<WeeklyCalendarScreen> with RouteA
       body: _taskDataSource == null
           ? const Center(child: CircularProgressIndicator()) // Show loading indicator
           : _buildCalendar(),
-      floatingActionButton: _buildFloatingActionButton(),
     );
   }
 
@@ -75,24 +73,6 @@ class _WeeklyCalendarScreenState extends State<WeeklyCalendarScreen> with RouteA
       dataSource: _taskDataSource,
       loadMoreWidgetBuilder: _buildLoadMoreWidget,
     );
-  }
-
-  // Build the floating action button
-  Widget _buildFloatingActionButton() {
-    return FloatingActionButton(
-      onPressed: _onAddTaskPressed,
-      child: const Icon(Icons.add),
-    );
-  }
-
-  // Handle the "Add Task" button press
-  void _onAddTaskPressed() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => const ManageTaskScreen()),
-    ).then((_) {
-      _initializeDataSource(); // Reload data when returning
-    });
   }
 
   Widget _buildLoadMoreWidget(BuildContext context, LoadMoreCallback loadMoreAppointments) {
