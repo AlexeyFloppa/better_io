@@ -6,11 +6,11 @@ class EditableListTile extends StatelessWidget {
   final VoidCallback onTap;
 
   const EditableListTile({
-    Key? key,
+    super.key,
     required this.title,
     required this.subtitle,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

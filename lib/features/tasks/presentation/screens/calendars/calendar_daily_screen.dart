@@ -12,15 +12,15 @@ import 'package:better_io/features/tasks/data/data_sources/task_data_source.dart
 import 'package:better_io/features/tasks/data/models/hive_task_model.dart';
 import 'package:better_io/features/tasks/data/repositories/hive_task_repository.dart';
 
-// Main widget for the weekly calendar screen
-class WeeklyCalendarScreen extends StatefulWidget {
-  const WeeklyCalendarScreen({Key? key}) : super(key: key);
+// Main widget for the daily calendar screen
+class CalendarDailyScreen extends StatefulWidget {
+  const CalendarDailyScreen({super.key});
 
   @override
-  State<WeeklyCalendarScreen> createState() => _WeeklyCalendarScreenState();
+  State<CalendarDailyScreen> createState() => _CalendarDailyScreenState();
 }
 
-class _WeeklyCalendarScreenState extends State<WeeklyCalendarScreen> with RouteAware {
+class _CalendarDailyScreenState extends State<CalendarDailyScreen> with RouteAware {
   // Variables
   TaskDataSource? _taskDataSource; // Nullable to handle uninitialized state
   late final GetTasksByDateUseCase _getTasksByDateUseCase;
@@ -30,7 +30,7 @@ class _WeeklyCalendarScreenState extends State<WeeklyCalendarScreen> with RouteA
   @override
   void initState() {
     super.initState();
-    log('WeeklyCalendarScreen initialized');
+    log('CalendarDailyScreen initialized');
     _initializeUseCase(); // Initialize domain logic
     _initializeDataSource(); // Load data
   }
@@ -51,7 +51,7 @@ class _WeeklyCalendarScreenState extends State<WeeklyCalendarScreen> with RouteA
 
     setState(() {
       _taskDataSource = TaskDataSource(tasks, _getTasksByDateUseCase);
-      _taskDataSource!.handleLoadMore(DateTime.now(), DateTime.now().add(const Duration(days: 7)));
+      _taskDataSource!.handleLoadMore(DateTime.now(), DateTime.now().add(const Duration(days: 1)));
     });
   }
 
@@ -69,7 +69,7 @@ class _WeeklyCalendarScreenState extends State<WeeklyCalendarScreen> with RouteA
   Widget _buildCalendar() {
     return SfCalendar(
       headerHeight: 0,
-      view: CalendarView.week,
+      view: CalendarView.day,
       dataSource: _taskDataSource,
       loadMoreWidgetBuilder: _buildLoadMoreWidget,
     );

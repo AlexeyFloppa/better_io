@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'dart:developer' as developer;
 
 class FABButton extends StatelessWidget {
   final void Function(BuildContext context)? onTap;
 
-  const FABButton({Key? key, this.onTap}) : super(key: key);
+  const FABButton({super.key, this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +21,8 @@ class FABButton extends StatelessWidget {
         ),
         child: InkWell(
           borderRadius: BorderRadius.circular(16),
-          onTap: onTap != null ? () => onTap!(context) : () => print("pressed"),
+          onTap: onTap != null ? () => onTap!(context) : () => developer.log("FAB pressed"),
+
           child: SizedBox(
             width: 56,
             height: 56,

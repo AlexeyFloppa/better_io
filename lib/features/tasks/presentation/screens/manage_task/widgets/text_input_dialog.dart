@@ -6,11 +6,11 @@ class TextInputDialog extends StatelessWidget {
   final ValueChanged<String> onSave;
 
   const TextInputDialog({
-    Key? key,
+    super.key,
     required this.title,
     required this.initialValue,
     required this.onSave,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -12,26 +12,25 @@ import 'package:better_io/features/tasks/data/data_sources/task_data_source.dart
 import 'package:better_io/features/tasks/data/models/hive_task_model.dart';
 import 'package:better_io/features/tasks/data/repositories/hive_task_repository.dart';
 
-// Main widget for the schedule screen
-class ScheduleCalendarScreen extends StatefulWidget {
-  const ScheduleCalendarScreen({Key? key}) : super(key: key);
+// Main widget for the weekly calendar screen
+class CalendarWeeklyScreen extends StatefulWidget {
+  const CalendarWeeklyScreen({super.key});
 
   @override
-  State<ScheduleCalendarScreen> createState() => _ScheduleCalendarScreenState();
+  State<CalendarWeeklyScreen> createState() => _CalendarWeeklyScreenState();
 }
 
-class _ScheduleCalendarScreenState extends State<ScheduleCalendarScreen> with RouteAware {
+class _CalendarWeeklyScreenState extends State<CalendarWeeklyScreen> with RouteAware {
   // Variables
   TaskDataSource? _taskDataSource; // Nullable to handle uninitialized state
   late final GetTasksByDateUseCase _getTasksByDateUseCase;
   late final RepeatHelper _repeatHelper; // Assuming this is defined somewhere
 
-
   // Lifecycle: Initialize the screen
   @override
   void initState() {
     super.initState();
-    log('ScheduleCalendarScreen initialized');
+    log('CalendarWeeklyScreen initialized');
     _initializeUseCase(); // Initialize domain logic
     _initializeDataSource(); // Load data
   }
@@ -41,16 +40,18 @@ class _ScheduleCalendarScreenState extends State<ScheduleCalendarScreen> with Ro
     final taskBox = Hive.box<HiveTaskModel>('tasks'); // Assume the box is already opened
     final repository = HiveTaskRepository(taskBox);
     _repeatHelper = RepeatHelper(); // Initialize the repeat helper
+    // _getAllTasksUseCase = GetAllTasksUseCase(repository);
     _getTasksByDateUseCase = GetTasksByDateUseCase(repository, _repeatHelper);
   }
 
   // Load tasks and map them to calendar appointments
   Future<void> _initializeDataSource() async {
+    // final tasks = await _getTasksByDateUseCase.execute(taskAmount: 20);
     List<Task> tasks = [];
 
     setState(() {
       _taskDataSource = TaskDataSource(tasks, _getTasksByDateUseCase);
-      _taskDataSource!.handleLoadMore(DateTime.now(), DateTime.now().add(const Duration(days: 30)));
+      _taskDataSource!.handleLoadMore(DateTime.now(), DateTime.now().add(const Duration(days: 7)));
     });
   }
 
@@ -67,15 +68,8 @@ class _ScheduleCalendarScreenState extends State<ScheduleCalendarScreen> with Ro
   // Build the calendar widget
   Widget _buildCalendar() {
     return SfCalendar(
-      // appointmentBuilder: (context, calendarAppointmentDetails) =>
-      //     scheduleAppointmentBuilder(context, calendarAppointmentDetails),
       headerHeight: 0,
-      scheduleViewSettings: const ScheduleViewSettings(
-        hideEmptyScheduleWeek: true,
-        monthHeaderSettings: MonthHeaderSettings(height: 0),
-        weekHeaderSettings: WeekHeaderSettings(height: 0),
-      ),
-      view: CalendarView.schedule,
+      view: CalendarView.week,
       dataSource: _taskDataSource,
       loadMoreWidgetBuilder: _buildLoadMoreWidget,
     );

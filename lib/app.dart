@@ -1,4 +1,4 @@
-import 'package:better_io/features/navigation/presentation/widgets/adaptive_layout.dart';
+import 'package:better_io/features/navigation/presentation/layout/adaptive_layout.dart';
 import 'package:flutter/material.dart';
 import 'core/theme/app_theme.dart';
 import 'package:provider/provider.dart';

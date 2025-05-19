@@ -5,10 +5,10 @@ class DurationPickerDialog extends StatelessWidget {
   final ValueChanged<int> onSave;
 
   const DurationPickerDialog({
-    Key? key,
+    super.key,
     required this.initialAmount,
     required this.onSave,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 class CustomDayPickerDialog extends StatefulWidget {
   final Map<String, int> preselectedValues; // Preselected values
 
-  const CustomDayPickerDialog({Key? key, required this.preselectedValues}) : super(key: key);
+  const CustomDayPickerDialog({super.key, required this.preselectedValues});
 
   @override
-  _CustomDayPickerDialogState createState() => _CustomDayPickerDialogState();
+  CustomDayPickerDialogState createState() => CustomDayPickerDialogState();
 }
 
-class _CustomDayPickerDialogState extends State<CustomDayPickerDialog> {
+class CustomDayPickerDialogState extends State<CustomDayPickerDialog> {
   late Map<String, int> _timeValues;
 
   @override
@@ -107,12 +107,11 @@ class _TimePickerContainer extends StatelessWidget {
   final VoidCallback onDecrement;
 
   const _TimePickerContainer({
-    Key? key,
     required this.label,
     required this.value,
     required this.onIncrement,
     required this.onDecrement,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -121,7 +120,7 @@ class _TimePickerContainer extends StatelessWidget {
       width: 80, // Fixed width for each container
       margin: const EdgeInsets.symmetric(horizontal: 8.0),
       decoration: BoxDecoration(
-        color: theme.colorScheme.surfaceVariant,
+        color: theme.colorScheme.surfaceContainerHighest,
         borderRadius: BorderRadius.circular(12),
       ),
       padding: const EdgeInsets.all(8.0),

@@ -13,14 +13,14 @@ import 'package:better_io/features/tasks/data/models/hive_task_model.dart';
 import 'package:better_io/features/tasks/data/repositories/hive_task_repository.dart';
 
 // Main widget for the monthly calendar screen
-class MonthlyCalendarScreen extends StatefulWidget {
-  const MonthlyCalendarScreen({Key? key}) : super(key: key);
+class CalendarMonthlyScreen extends StatefulWidget {
+  const CalendarMonthlyScreen({super.key});
 
   @override
-  State<MonthlyCalendarScreen> createState() => _MonthlyCalendarScreenState();
+  State<CalendarMonthlyScreen> createState() => _CalendarMonthlyScreenState();
 }
 
-class _MonthlyCalendarScreenState extends State<MonthlyCalendarScreen> with RouteAware {
+class _CalendarMonthlyScreenState extends State<CalendarMonthlyScreen> with RouteAware {
   // Variables
   TaskDataSource? _taskDataSource; // Nullable to handle uninitialized state
   late final GetTasksByDateUseCase _getTasksByDateUseCase;
@@ -30,7 +30,7 @@ class _MonthlyCalendarScreenState extends State<MonthlyCalendarScreen> with Rout
   @override
   void initState() {
     super.initState();
-    log('MonthlyCalendarScreen initialized');
+    log('CalendarMonthlyScreen initialized');
     _initializeUseCase(); // Initialize domain logic
     _initializeDataSource(); // Load data
   }

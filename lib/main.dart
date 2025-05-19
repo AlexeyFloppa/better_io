@@ -1,5 +1,3 @@
-// ignore_for_file: unused_local_variable
-
 import 'package:better_io/app.dart';
 import 'package:flutter/material.dart';
 
@@ -18,7 +16,7 @@ void main() async {
   Hive.registerAdapter(ColorAdapter());
 
   // Open the Hive box for tasks.
-    final taskBox = await Hive.openBox<HiveTaskModel>('tasks');
+  await Hive.openBox<HiveTaskModel>('tasks');
   runApp(const App());
 
 }

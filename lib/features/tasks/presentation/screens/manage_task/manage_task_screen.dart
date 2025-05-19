@@ -10,8 +10,10 @@ import 'package:better_io/features/tasks/presentation/screens/manage_task/widget
 import 'package:better_io/features/tasks/presentation/screens/manage_task/widgets/editable_list_tile.dart';
 import 'package:better_io/features/tasks/presentation/screens/manage_task/widgets/text_input_dialog.dart';
 
+import 'dart:developer' as developer;
+
 class ManageTaskScreen extends StatefulWidget {
-  const ManageTaskScreen({Key? key}) : super(key: key);
+  const ManageTaskScreen({super.key});
 
   @override
   State<ManageTaskScreen> createState() => _ManageTaskScreenState();
@@ -92,10 +94,9 @@ class _ManageTaskScreenState extends State<ManageTaskScreen> {
       duration: _durationType,
       priority: 'No Priority',
     );
-  print('StartDate: ${task.startDate}, EndDate: ${task.endDate}');
-  print(_endDate);
-    print(_endTime);
+    developer.log('StartDate: ${task.startDate}, EndDate: ${task.endDate}');
     await _setTaskUseCase.execute(task);
+    if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Task saved successfully!')),
     );
@@ -152,13 +153,14 @@ class _ManageTaskScreenState extends State<ManageTaskScreen> {
         );
       },
     );
+    if (!mounted) return;
     if (picked != null) {
       setState(() {
         if (isStartTime) {
           _startTime = picked;
         } else {
           _endTime = picked;
-          print('EndTime: $_endTime');
+          developer.log('EndTime: $_endTime');
         }
       });
     }
@@ -341,7 +343,9 @@ class _ManageTaskScreenState extends State<ManageTaskScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final Color disabledColor = Theme.of(context).colorScheme.onSurface.withOpacity(0.38);
+    final Color disabledColor = Theme.of(context).colorScheme.onSurface.withAlpha(
+      (Theme.of(context).colorScheme.onSurface.a * 0.38).round(),
+    );
 
     return Scaffold(
       appBar: AppBar(
