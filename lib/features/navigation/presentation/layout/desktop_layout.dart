@@ -17,27 +17,27 @@ class DesktopLayout extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-      title: Text(currentModule.title),
+        title: Text(currentModule.title),
       ),
       body: Row(
-      children: [
-        const SectionNavRail(),              // Left rail = sections
-        const VerticalDivider(width: 1),
-        Expanded(
-        child: Column(
-          children: [
-          if (currentModule.submodules.isNotEmpty)
-            const SubmoduleTabBar(),
+        children: [
+          const SectionNavRail(),
+          const VerticalDivider(width: 1),
           Expanded(
-            child: currentSub?.screen ?? currentModule.screen,
+            child: Column(
+              children: [
+                if (currentModule.submodules.isNotEmpty)
+                  const SubmoduleTabBar(),
+                Expanded(
+                  child: currentSub?.screen ?? currentModule.screen,
+                ),
+              ],
+            ),
           ),
-          ],
-        ),
-        ),
-        const VerticalDivider(width: 1),
-        const ModuleNavRail(),               // Right rail = modules
-      ],
+          const VerticalDivider(width: 1),
+          const ModuleNavRail(),
+        ],
       ),
     );
-    }
   }
+}

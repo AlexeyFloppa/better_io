@@ -21,7 +21,8 @@ class DurationPickerDialog extends StatelessWidget {
       content: TextField(
         controller: controller,
         keyboardType: TextInputType.number,
-        decoration: const InputDecoration(hintText: 'Enter amount (e.g., 1, 2, 3)'),
+        decoration:
+            const InputDecoration(hintText: 'Enter amount (e.g., 1, 2, 3)'),
       ),
       actions: [
         TextButton(

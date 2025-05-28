@@ -1,23 +1,21 @@
-import 'dart:developer';
-import 'dart:ui'; // Import for the Color class
+import 'dart:ui';
+import 'package:better_io/features/tasks/domain/usecases/hive/get_all_hive_tasks.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:better_io/features/tasks/domain/entities/task.dart';
-import 'package:better_io/features/tasks/domain/usecases/hive/get_nearest_to_date_hive_tasks.dart';
 
-/// Data source for managing tasks in the calendar.
-/// Converts `Task` entities into `Appointment` objects for display.
 class TaskDataSource extends CalendarDataSource {
-  final GetTasksByDateUseCase getTasksByDateUseCase;
+  final GetAllHiveTasksUseCase getAllHiveTasksUseCase;
 
-  /// Constructor to initialize the data source with a list of appointments.
-  TaskDataSource(List<Task> tasks, this.getTasksByDateUseCase) {
+  final Set<String> _loadedInstanceKeys = {};
+
+  TaskDataSource(List<Task> tasks, this.getAllHiveTasksUseCase) {
     appointments = tasks.map(_taskToAppointment).toList();
-    appointments = appointments;
+    for (final task in tasks) {
+      _loadedInstanceKeys.add(_generateInstanceKey(task));
+    }
   }
 
-  /// Converts a `Task` entity into an `Appointment` object.
   Appointment _taskToAppointment(Task task) {
-    log('Converting Task to Appointment: ${task.id}');
     return Appointment(
       id: task.id,
       subject: task.title,
@@ -25,10 +23,13 @@ class TaskDataSource extends CalendarDataSource {
       endTime: task.endDate,
       color: task.color,
       isAllDay: task.isAllDay,
+      notes: task.description,
+      recurrenceRule: task.recurrenceRule,
     );
   }
 
-  // CalendarDataSource overrides for accessing appointment properties.
+  String _generateInstanceKey(Task task) =>
+      '${task.id}_${task.startDate.toIso8601String()}';
 
   @override
   DateTime getStartTime(int index) => appointments![index].startTime;
@@ -44,25 +45,4 @@ class TaskDataSource extends CalendarDataSource {
 
   @override
   bool isAllDay(int index) => appointments![index].isAllDay ?? false;
-
-  /// Handles loading more data when the calendar requests it.
-  @override
-  Future<void> handleLoadMore(DateTime startDate, DateTime endDate) async {
-    log('Loading more data from $startDate to $endDate');
-
-    if (appointments!.isNotEmpty) {
-      log(appointments!.last.startTime.toString());
-    }
-    // Fetch additional tasks using the domain use case
-    final newTasks = await getTasksByDateUseCase.execute(
-      startDate: appointments!.isNotEmpty ? appointments!.last.startTime : startDate,
-      startTaskId: appointments!.isNotEmpty ? appointments!.last.id : null,
-      taskAmount: 20, // Load 20 tasks at a time
-    );
-
-    final newAppointments = newTasks.map(_taskToAppointment).toList();
-
-    appointments!.addAll(newAppointments);
-    notifyListeners(CalendarDataSourceAction.add, newAppointments);
-  }
 }

@@ -11,13 +11,12 @@ class SubmoduleTabBar extends StatelessWidget implements PreferredSizeWidget {
     final controller = Provider.of<NavController>(context);
     final submodules = NavSelector.getSubmodules(controller);
     final selectedId = controller.selectedSubmoduleId;
-    final selectedIndex =
-        submodules.indexWhere((sub) => sub.id == selectedId);
+    final selectedIndex = submodules.indexWhere((sub) => sub.id == selectedId);
 
     return Container(
       decoration: BoxDecoration(
-        color: Theme.of(context).appBarTheme.backgroundColor ?? Theme.of(context).colorScheme.surface,
-
+        color: Theme.of(context).appBarTheme.backgroundColor ??
+            Theme.of(context).colorScheme.surface,
       ),
       child: TabBar(
         isScrollable: false,

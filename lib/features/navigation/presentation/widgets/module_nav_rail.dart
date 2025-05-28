@@ -18,8 +18,9 @@ class ModuleNavRail extends StatelessWidget {
         : null;
 
     return Container(
-      color: Theme.of(context).appBarTheme.backgroundColor ?? Theme.of(context).colorScheme.surface,
-      width: 90, // or whatever width you want
+      color: Theme.of(context).appBarTheme.backgroundColor ??
+          Theme.of(context).colorScheme.surface,
+      width: 90,
       child: Column(
         children: [
           Expanded(
@@ -43,9 +44,8 @@ class ModuleNavRail extends StatelessWidget {
           ),
           // TODO: Rewrite it becasue if we have no button, we have shirink sized box, with padding, which is not good
           Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: currentModule?.bottomButton
-          ),
+              padding: const EdgeInsets.all(16.0),
+              child: currentModule?.bottomButton),
         ],
       ),
     );

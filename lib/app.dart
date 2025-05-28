@@ -16,12 +16,12 @@ class App extends StatelessWidget {
       title: 'Better.io',
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
-      themeMode: ThemeMode.system, // Use system theme preference
+      themeMode: ThemeMode.system,
       home: ChangeNotifierProvider(
         create: (_) => NavController(),
         child: AdaptiveLayout(),
       ),
-      navigatorObservers: [routeObserver], // Add RouteObserver here
+      navigatorObservers: [routeObserver],
     );
   }
 }

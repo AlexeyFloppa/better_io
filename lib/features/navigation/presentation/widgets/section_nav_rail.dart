@@ -3,7 +3,6 @@ import 'package:better_io/features/navigation/domain/nav_selector.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-
 class SectionNavRail extends StatelessWidget {
   const SectionNavRail({super.key});
 
@@ -21,7 +20,6 @@ class SectionNavRail extends StatelessWidget {
         final firstModule = section.modules.first;
         controller.setSection(section.id);
         controller.setModule(firstModule.id);
-        // Only set submodule if there are submodules
         if (firstModule.submodules.isNotEmpty) {
           controller.setSubmodule(firstModule.submodules.first.id);
         }

@@ -4,14 +4,16 @@ class RepeatDaysPickerDialog extends StatefulWidget {
   final String type; // 'week', 'month', 'year'
   final List<int> preselectedDays; // Preselected days
 
-  const RepeatDaysPickerDialog({super.key, required this.type, required this.preselectedDays});
+  const RepeatDaysPickerDialog(
+      {super.key, required this.type, required this.preselectedDays});
 
   @override
   State<RepeatDaysPickerDialog> createState() => _RepeatDaysPickerDialogState();
 }
 
 class _RepeatDaysPickerDialogState extends State<RepeatDaysPickerDialog> {
-  final Map<int, Set<int>> selectedDaysByMonth = {}; // Store selected days for each month
+  final Map<int, Set<int>> selectedDaysByMonth =
+      {}; // Store selected days for each month
   int currentMonth = DateTime.now().month;
 
   static const List<String> months = [
@@ -35,19 +37,22 @@ class _RepeatDaysPickerDialogState extends State<RepeatDaysPickerDialog> {
     // Initialize selected days based on preselectedDays
     if (widget.type == 'year') {
       for (final dayOfYear in widget.preselectedDays) {
-        final date = DateTime(DateTime.now().year, 1, 1).add(Duration(days: dayOfYear - 1));
+        final date = DateTime(DateTime.now().year, 1, 1)
+            .add(Duration(days: dayOfYear - 1));
         selectedDaysByMonth.putIfAbsent(date.month, () => {}).add(date.day);
       }
     } else if (widget.type == 'month') {
       selectedDaysByMonth[currentMonth] = widget.preselectedDays.toSet();
     } else if (widget.type == 'week') {
-      selectedDaysByMonth[1] = widget.preselectedDays.toSet(); // Use key 1 for weekly days
+      selectedDaysByMonth[1] =
+          widget.preselectedDays.toSet(); // Use key 1 for weekly days
     }
   }
 
   int get itemCount {
     if (widget.type == 'year') {
-      return DateTime(DateTime.now().year, currentMonth + 1, 0).day; // Days in the current month
+      return DateTime(DateTime.now().year, currentMonth + 1, 0)
+          .day; // Days in the current month
     }
     switch (widget.type) {
       case 'week':
@@ -68,7 +73,8 @@ class _RepeatDaysPickerDialogState extends State<RepeatDaysPickerDialog> {
 
   void _changeMonth(int direction) {
     setState(() {
-      currentMonth = (currentMonth + direction - 1) % 12 + 1; // Cycle through months
+      currentMonth =
+          (currentMonth + direction - 1) % 12 + 1; // Cycle through months
     });
   }
 
@@ -76,7 +82,8 @@ class _RepeatDaysPickerDialogState extends State<RepeatDaysPickerDialog> {
   Widget build(BuildContext context) {
     final double chipWidth = 60.0; // Fixed width for each chip
     final double paddingWidth = 8.0; // Padding between chips
-    final double dialogWidth = (chipWidth + paddingWidth) * 7; // Calculate width for 7 chips per row
+    final double dialogWidth =
+        (chipWidth + paddingWidth) * 7; // Calculate width for 7 chips per row
 
     final rows = <Widget>[];
     for (int i = 0; i < (itemCount / 7).ceil(); i++) {
@@ -94,14 +101,16 @@ class _RepeatDaysPickerDialogState extends State<RepeatDaysPickerDialog> {
                 return SizedBox(
                   width: chipWidth, // Fixed width for the chip container
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 4.0), // Add spacing between chips
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 4.0), // Add spacing between chips
                     child: FilterChip(
                       label: Center(child: Text('$day')),
                       selected: isSelected,
                       onSelected: (val) {
                         setState(() {
                           final days = selectedDaysByMonth.putIfAbsent(
-                              widget.type == 'week' ? 1 : currentMonth, () => <int>{});
+                              widget.type == 'week' ? 1 : currentMonth,
+                              () => <int>{});
                           if (isSelected) {
                             days.remove(day);
                           } else {
@@ -164,10 +173,12 @@ class _RepeatDaysPickerDialogState extends State<RepeatDaysPickerDialog> {
                     final days = entry.value;
                     return days.map((day) {
                       final date = DateTime(DateTime.now().year, month, day);
-                      return date.difference(DateTime(date.year, 1, 1)).inDays + 1; // Day of the year
+                      return date.difference(DateTime(date.year, 1, 1)).inDays +
+                          1; // Day of the year
                     });
                   }).toList()
-                : selectedDays.toList(); // For week and month, return selected days directly
+                : selectedDays
+                    .toList(); // For week and month, return selected days directly
             Navigator.pop(context, allSelectedDays); // Return the selected days
           },
           child: const Text('OK'),

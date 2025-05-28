@@ -14,7 +14,8 @@ class TextInputDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController controller = TextEditingController(text: initialValue);
+    final TextEditingController controller =
+        TextEditingController(text: initialValue);
 
     return AlertDialog(
       title: Text(title),

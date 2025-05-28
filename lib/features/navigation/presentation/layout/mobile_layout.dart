@@ -17,23 +17,22 @@ class MobileLayout extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-      title: Text(currentModule.title),
-      leading: Builder(
-        builder: (context) => IconButton(
-        icon: const Icon(Icons.menu),
-        onPressed: () => Scaffold.of(context).openDrawer(),
+        title: Text(currentModule.title),
+        leading: Builder(
+          builder: (context) => IconButton(
+            icon: const Icon(Icons.menu),
+            onPressed: () => Scaffold.of(context).openDrawer(),
+          ),
         ),
-      ),
       ),
       drawer: const SectionDrawer(),
       body: Column(
-      children: [
-        if (currentModule.submodules.isNotEmpty)
-        const SubmoduleTabBar(),
-        Expanded(
-        child: currentSub?.screen ?? currentModule.screen,
-        ),
-      ],
+        children: [
+          if (currentModule.submodules.isNotEmpty) const SubmoduleTabBar(),
+          Expanded(
+            child: currentSub?.screen ?? currentModule.screen,
+          ),
+        ],
       ),
       bottomNavigationBar: const BottomModuleNav(),
       floatingActionButton: currentModule.bottomButton,

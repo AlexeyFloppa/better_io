@@ -1,5 +1,3 @@
-// ignore_for_file: unrelated_type_equality_checks
-
 import 'package:better_io/features/tasks/domain/repositories/task_repository.dart';
 import 'package:better_io/features/tasks/domain/entities/task.dart';
 import 'package:hive/hive.dart';
@@ -15,7 +13,6 @@ class HiveTaskRepository implements TaskRepository {
     return _taskBox.values.map((hiveTask) => _mapToDomain(hiveTask)).toList();
   }
 
-
   @override
   Future<void> setTask(Task task) async {
     final hiveTask = _mapToHive(task);
@@ -24,7 +21,9 @@ class HiveTaskRepository implements TaskRepository {
 
   @override
   Future<void> deleteTask(String id) async {
-    final taskKey = _taskBox.keys.firstWhere((key) => _taskBox.get(key)?.taskId == id, orElse: () => null);
+    final taskKey = _taskBox.keys.firstWhere(
+        (key) => _taskBox.get(key)?.taskId.toString() == id,
+        orElse: () => null);
     if (taskKey != null) {
       await _taskBox.delete(taskKey);
     }
@@ -39,10 +38,7 @@ class HiveTaskRepository implements TaskRepository {
       startDate: hiveTask.startDate,
       endDate: hiveTask.endDate,
       isAllDay: hiveTask.isAllDay,
-      isRecurring: hiveTask.isRecurring,
-      recurrenceType: hiveTask.recurrenceType,
-      recurrenceInterval: hiveTask.recurrenceInterval,
-      recurrenceDays: hiveTask.recurrenceDays,
+      recurrenceRule: hiveTask.recurrenceRule,
       duration: hiveTask.duration,
       priority: hiveTask.priority,
     );
@@ -57,10 +53,7 @@ class HiveTaskRepository implements TaskRepository {
       startDate: task.startDate,
       endDate: task.endDate,
       isAllDay: task.isAllDay,
-      isRecurring: task.isRecurring,
-      recurrenceType: task.recurrenceType,
-      recurrenceInterval: task.recurrenceInterval,
-      recurrenceDays: task.recurrenceDays,
+      recurrenceRule: task.recurrenceRule,
       duration: task.duration,
       priority: task.priority,
     );

@@ -10,7 +10,7 @@ class FABButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Material(
       color: Colors.transparent,
-      elevation: 6, // Same as default FAB elevation
+      elevation: 6,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
       ),
@@ -21,8 +21,9 @@ class FABButton extends StatelessWidget {
         ),
         child: InkWell(
           borderRadius: BorderRadius.circular(16),
-          onTap: onTap != null ? () => onTap!(context) : () => developer.log("FAB pressed"),
-
+          onTap: onTap != null
+              ? () => onTap!(context)
+              : () => developer.log("FAB pressed"),
           child: SizedBox(
             width: 56,
             height: 56,

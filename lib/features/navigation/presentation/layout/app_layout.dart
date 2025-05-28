@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import 'package:better_io/features/navigation/domain/nav_selector.dart';
 import 'package:better_io/features/navigation/domain/nav_controller.dart';
 
-
 class AppLayout extends StatelessWidget {
   const AppLayout({super.key});
 

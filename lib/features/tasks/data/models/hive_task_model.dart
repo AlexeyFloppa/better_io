@@ -3,7 +3,6 @@ import 'package:hive/hive.dart';
 
 part 'hive_task_model.g.dart';
 
-/// Hive model for storing task data.
 @HiveType(typeId: 0)
 class HiveTaskModel extends HiveObject {
   @HiveField(0)
@@ -11,6 +10,7 @@ class HiveTaskModel extends HiveObject {
 
   @HiveField(1)
   final String title;
+
   @HiveField(2)
   final String description;
 
@@ -19,23 +19,20 @@ class HiveTaskModel extends HiveObject {
 
   @HiveField(4)
   final DateTime startDate;
+
   @HiveField(5)
   final DateTime endDate;
+
   @HiveField(6)
   final bool isAllDay;
 
   @HiveField(7)
-  final bool isRecurring;
-  @HiveField(8)
-  final String recurrenceType;
-  @HiveField(9)
-  final int recurrenceInterval;
-  @HiveField(10)
-  final List<int> recurrenceDays;
+  final String? recurrenceRule; // e.g., "FREQ=WEEKLY;INTERVAL=1;BYDAY=MO,WE,FR"
 
-  @HiveField(11)
+  @HiveField(8)
   final String duration;
-  @HiveField(12)
+
+  @HiveField(9)
   final String priority;
 
   HiveTaskModel({
@@ -46,30 +43,23 @@ class HiveTaskModel extends HiveObject {
     required this.startDate,
     required this.endDate,
     required this.isAllDay,
-    required this.isRecurring,
-    required this.recurrenceType,
-    required this.recurrenceInterval,
-    required this.recurrenceDays,
+    this.recurrenceRule,
     required this.duration,
     required this.priority,
   });
 
   HiveTaskModel copyWithNewDate(DateTime newStart, Duration duration) {
-  return HiveTaskModel(
-    taskId: taskId,
-    title: title,
-    description: description,
-    startDate: newStart,
-    endDate: newStart.add(duration),
-    isAllDay: isAllDay,
-    isRecurring: isRecurring,
-    recurrenceType: recurrenceType,
-    recurrenceInterval: recurrenceInterval,
-    recurrenceDays: recurrenceDays,
-    color: color,
-    duration: duration.inDays.toString(), // Or keep the original string if needed
-    priority: priority,
-  );
-}
-
+    return HiveTaskModel(
+      taskId: taskId,
+      title: title,
+      description: description,
+      startDate: newStart,
+      endDate: newStart.add(duration),
+      isAllDay: isAllDay,
+      recurrenceRule: recurrenceRule,
+      color: color,
+      duration: duration.inDays.toString(),
+      priority: priority,
+    );
+  }
 }

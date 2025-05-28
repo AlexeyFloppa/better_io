@@ -25,7 +25,6 @@ class SectionDrawer extends StatelessWidget {
                 final firstModule = section.modules.first;
                 controller.setSection(section.id);
                 controller.setModule(firstModule.id);
-                // Only set submodule if there are submodules
                 if (firstModule.submodules.isNotEmpty) {
                   controller.setSubmodule(firstModule.submodules.first.id);
                 }

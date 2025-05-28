@@ -5,6 +5,10 @@ publish_to: 'none'
 
 version: 1.0.0+1
 
+homepage: https://github.com/AlexeyFloppa/better_io
+repository: https://github.com/AlexeyFloppa/better_io
+issue_tracker: https://github.com/AlexeyFloppa/better_io/issues
+
 environment:
   sdk: ^3.6.1
 
