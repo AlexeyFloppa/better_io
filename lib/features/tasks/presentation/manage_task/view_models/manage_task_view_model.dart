@@ -4,6 +4,7 @@ import 'package:better_io/features/tasks/domain/entities/task.dart';
 class ManageTaskViewModel extends ChangeNotifier {
   String taskName = 'Empty';
   String taskDescription = 'Empty';
+  Color taskColor = Colors.primaries[DateTime.now().millisecondsSinceEpoch % Colors.primaries.length];
 
   DateTime startDate = DateTime.now().subtract(const Duration(minutes: 1));
   DateTime endDate = DateTime(
@@ -35,6 +36,11 @@ class ManageTaskViewModel extends ChangeNotifier {
 
   void setTaskDescription(String value) {
     taskDescription = value;
+    notifyListeners();
+  }
+
+  void setTaskColor(Color value) {
+    taskColor = value;
     notifyListeners();
   }
 

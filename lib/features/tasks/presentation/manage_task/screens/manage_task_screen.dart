@@ -1,3 +1,4 @@
+import 'package:better_io/features/tasks/presentation/manage_task/widgets/color_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:better_io/features/tasks/domain/entities/task.dart';
@@ -74,7 +75,7 @@ class _ManageTaskScreenBodyState extends State<_ManageTaskScreenBody> {
       id: DateTime.now().millisecondsSinceEpoch.toString(),
       title: vm.taskName,
       description: vm.taskDescription,
-      color: Colors.blue,
+      color: vm.taskColor,
       startDate: !vm.isAllDay
           ? DateTime(
               vm.startDate.year,
@@ -358,6 +359,23 @@ class _ManageTaskScreenBodyState extends State<_ManageTaskScreenBody> {
                 subtitle: vm.taskDescription,
                 onTap: () => _editField(context, vm, 'description'),
               ),
+EditableListTile(
+                title: 'Color:',
+                subtitle:
+                    '#${vm.taskColor.value.toRadixString(16).padLeft(8, '0').toUpperCase()}',
+                trailing: CircleAvatar(
+                  backgroundColor: vm.taskColor,
+                  radius: 15,
+                ),
+                onTap: () {
+                  ColorPickerDialog.show(
+                    context: context,
+                    initialColor: vm.taskColor,
+                    onColorPicked: (color) => vm.setTaskColor(color),
+                  );
+                },
+              ),
+
               EditableListTile(
                 title: 'Start Date:',
                 subtitle: DateFormat.yMMMd().format(vm.startDate),
