@@ -173,8 +173,11 @@ class _RepeatDaysPickerDialogState extends State<RepeatDaysPickerDialog> {
                     final days = entry.value;
                     return days.map((day) {
                       final date = DateTime(DateTime.now().year, month, day);
-                      return date.difference(DateTime(date.year, 1, 1)).inDays +
-                          1; // Day of the year
+                      // Fix: Use Jan 0 as base so Jan 1 is day 1, April 6 is correct
+                      print(
+                          'Selected date: ${date.difference(DateTime(date.year, 1, 0)).inDays}');
+                      return date.difference(DateTime(date.year, 1, 0)).inDays +
+                          1;
                     });
                   }).toList()
                 : selectedDays

@@ -65,7 +65,9 @@ class _ManageTaskScreenBodyState extends State<_ManageTaskScreenBody> {
       } else if (vm.repeatType == 'Monthly') {
         parts.add('BYMONTHDAY=${vm.monthlyRepeatDays.join(',')};');
       } else if (vm.repeatType == 'Yearly') {
+        // parts.add('BYYEARDAY=${vm.yearlyRepeatDays.join(',')};');
         parts.add('BYYEARDAY=${vm.yearlyRepeatDays.join(',')};');
+
       }
 
       recurrenceRule = parts.join(';');
