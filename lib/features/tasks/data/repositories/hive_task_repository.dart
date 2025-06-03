@@ -9,6 +9,15 @@ class HiveTaskRepository implements TaskRepository {
   HiveTaskRepository(this._taskBox);
 
   @override
+  Future<Task> getTask(String id) async {
+    final hiveTask = _taskBox.values.firstWhere(
+      (hiveTask) => hiveTask.taskId.toString() == id,
+      orElse: () => throw Exception('Task not found'),
+    );
+    return _mapToDomain(hiveTask);
+  }
+
+  @override
   Future<List<Task>> getTasks() async {
     return _taskBox.values.map((hiveTask) => _mapToDomain(hiveTask)).toList();
   }

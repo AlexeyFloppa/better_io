@@ -65,9 +65,7 @@ class _ManageTaskScreenBodyState extends State<_ManageTaskScreenBody> {
       } else if (vm.repeatType == 'Monthly') {
         parts.add('BYMONTHDAY=${vm.monthlyRepeatDays.join(',')};');
       } else if (vm.repeatType == 'Yearly') {
-        // parts.add('BYYEARDAY=${vm.yearlyRepeatDays.join(',')};');
         parts.add('BYYEARDAY=${vm.yearlyRepeatDays.join(',')};');
-
       }
 
       recurrenceRule = parts.join(';');
@@ -99,7 +97,7 @@ class _ManageTaskScreenBodyState extends State<_ManageTaskScreenBody> {
       isAllDay: vm.isAllDay,
       recurrenceRule: recurrenceRule,
       duration: vm.durationType,
-      priority: 'No Priority',
+      priority: vm.priority, // <-- pass selected priority
     );
 
     await _setTaskUseCase.execute(task);
@@ -361,7 +359,7 @@ class _ManageTaskScreenBodyState extends State<_ManageTaskScreenBody> {
                 subtitle: vm.taskDescription,
                 onTap: () => _editField(context, vm, 'description'),
               ),
-EditableListTile(
+              EditableListTile(
                 title: 'Color:',
                 subtitle:
                     '#${vm.taskColor.value.toRadixString(16).padLeft(8, '0').toUpperCase()}',
@@ -377,7 +375,62 @@ EditableListTile(
                   );
                 },
               ),
-
+              // --- Priority ListTile opens dialog ---
+              ListTile(
+                title: const Text('Priority:'),
+                subtitle: Text(vm.priority),
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      String tempPriority = vm.priority;
+                      return AlertDialog(
+                        title: const Text('Select Priority'),
+                        content: StatefulBuilder(
+                          builder: (context, setState) {
+                            return DropdownButton<String>(
+                              value: tempPriority,
+                              isExpanded: true,
+                              items: const [
+                                DropdownMenuItem(
+                                    value: 'No Priority',
+                                    child: Text('No Priority')),
+                                DropdownMenuItem(
+                                    value: 'Low Priority',
+                                    child: Text('Low Priority')),
+                                DropdownMenuItem(
+                                    value: 'Normal Priority',
+                                    child: Text('Normal Priority')),
+                                DropdownMenuItem(
+                                    value: 'High Priority',
+                                    child: Text('High Priority')),
+                              ],
+                              onChanged: (value) {
+                                if (value != null) {
+                                  setState(() => tempPriority = value);
+                                }
+                              },
+                            );
+                          },
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.of(context).pop(),
+                            child: const Text('Cancel'),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              vm.setPriority(tempPriority);
+                              Navigator.of(context).pop();
+                            },
+                            child: const Text('OK'),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                },
+              ),
               EditableListTile(
                 title: 'Start Date:',
                 subtitle: DateFormat.yMMMd().format(vm.startDate),

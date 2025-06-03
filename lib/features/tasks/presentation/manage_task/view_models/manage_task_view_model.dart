@@ -4,7 +4,8 @@ import 'package:better_io/features/tasks/domain/entities/task.dart';
 class ManageTaskViewModel extends ChangeNotifier {
   String taskName = 'Empty';
   String taskDescription = 'Empty';
-  Color taskColor = Colors.primaries[DateTime.now().millisecondsSinceEpoch % Colors.primaries.length];
+  Color taskColor = Colors.primaries[
+      DateTime.now().millisecondsSinceEpoch % Colors.primaries.length];
 
   DateTime startDate = DateTime.now().subtract(const Duration(minutes: 1));
   DateTime endDate = DateTime(
@@ -28,6 +29,14 @@ class ManageTaskViewModel extends ChangeNotifier {
   String durationType = 'Forever';
   DateTime? durationDate;
   int? durationAmount;
+
+  String priority = 'No Priority';
+  final List<String> priorityOptions = [
+    'No Priority',
+    'Low Priority',
+    'Normal Priority',
+    'High Priority',
+  ];
 
   void setTaskName(String value) {
     taskName = value;
@@ -118,8 +127,12 @@ class ManageTaskViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setPriority(String value) {
+    priority = value;
+    notifyListeners();
+  }
+
   Task buildTask() {
-    // You can add recurrenceRule logic here if needed
     return Task(
       id: DateTime.now().millisecondsSinceEpoch.toString(),
       title: taskName,
@@ -144,9 +157,9 @@ class ManageTaskViewModel extends ChangeNotifier {
             )
           : endDate,
       isAllDay: isAllDay,
-      recurrenceRule: null, // Add logic if needed
+      recurrenceRule: null,
       duration: durationType,
-      priority: 'No Priority',
+      priority: priority, // <-- use selected priority
     );
   }
 }

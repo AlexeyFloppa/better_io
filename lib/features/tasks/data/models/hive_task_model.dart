@@ -27,7 +27,7 @@ class HiveTaskModel extends HiveObject {
   final bool isAllDay;
 
   @HiveField(7)
-  final String? recurrenceRule; // e.g., "FREQ=WEEKLY;INTERVAL=1;BYDAY=MO,WE,FR"
+  final String? recurrenceRule;
 
   @HiveField(8)
   final String duration;

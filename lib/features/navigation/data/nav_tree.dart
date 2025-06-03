@@ -1,5 +1,4 @@
 import 'package:better_io/features/example_screens.dart';
-
 import 'package:better_io/features/home/home_screen.dart';
 import 'package:better_io/features/tasks/presentation/calendars/screens/calendar_daily_screen.dart';
 import 'package:better_io/features/tasks/presentation/calendars/screens/calendar_monthly_screen.dart';
@@ -70,7 +69,6 @@ final List<SectionNavData> appSections = [
                 icon: Icons.calendar_view_month,
                 screen: CalendarMonthlyScreen()),
           ],
-          //TODO: replace or add FAB Button to sections,I guess this is the wrong place to add the FAB button, because it will be added to only one module instead of all modules
           bottomButton: FABButton(
             onTap: (context) {
               Navigator.of(context).push(

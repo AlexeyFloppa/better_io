@@ -17,7 +17,7 @@ class RecurrenceRule {
   final RecurrenceType type;
   final int interval;
   final List<int>?
-      recurrencePoints; // weekdays or days-of-month, depending on type
+      recurrencePoints;
   final DateTime startDate;
   final DateTime endDate;
   final RecurrenceEndType endType;

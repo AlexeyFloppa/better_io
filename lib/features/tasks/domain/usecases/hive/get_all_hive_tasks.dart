@@ -36,25 +36,19 @@ class GetAllHiveTasksUseCase {
               continue;
             }
           }
-        }
-        else if (rule != null && rule.contains("BYYEARDAY=")) {
-          log('Processing BYYEARDAY rule for task: ${task.id}, rule: $rule');
+        } else if (rule != null && rule.contains("BYYEARDAY=")) {
           final byYearDayPart = RegExp(r'BYYEARDAY=([^;]+)').firstMatch(rule);
           if (byYearDayPart != null) {
             final daysStr = byYearDayPart.group(1);
-            log('Extracted BYYEARDAY days string: $daysStr');
             final days = daysStr
                 ?.split(',')
                 .map((e) => int.tryParse(e))
                 .where((e) => e != null)
                 .toList();
-            log('Parsed BYYEARDAY days: $days');
             if (days!.length > 1) {
               for (var day in days) {
-                // Calculate the correct date for the given year day
                 final year = task.startDate.year;
                 final date = DateTime(year).add(Duration(days: day! - 1));
-                // Replace FREQ=YEARLY;INTERVAL=4; with FREQ=MONTHLY;INTERVAL=48;
                 final freqIntervalReg = RegExp(r'FREQ=YEARLY;INTERVAL=(\d+);');
                 final match = freqIntervalReg.firstMatch(rule);
                 var newRule = rule;
@@ -62,20 +56,19 @@ class GetAllHiveTasksUseCase {
                   final oldInterval = int.parse(match.group(1)!);
                   final newInterval = 12 * oldInterval;
                   newRule = rule.replaceFirst(
-                  freqIntervalReg,
-                  'FREQ=MONTHLY;INTERVAL=$newInterval;',
+                    freqIntervalReg,
+                    'FREQ=MONTHLY;INTERVAL=$newInterval;',
                   );
                 }
                 newRule = newRule.replaceFirst(
                   RegExp(r'BYYEARDAY=([^;]+;?)'),
-                    'BYMONTHDAY=${date.day};',
+                  'BYMONTHDAY=${date.day};',
                 );
 
                 var newTask = task.copyWith(
                   recurrenceRule: newRule,
                   startDate: date,
                 );
-                log('Created new task for BYYEARDAY=$day: ${newTask.id}, rule: $newRule, date: $date');
                 expandedTasks.add(newTask);
               }
               continue;
@@ -86,7 +79,7 @@ class GetAllHiveTasksUseCase {
       }
       return expandedTasks;
     } catch (e, stackTrace) {
-      log('Error in GetAllHiveTasksUseCase: $e', stackTrace: stackTrace);
+      log("Error in GetAllHiveTasksUseCase: $e", stackTrace: stackTrace);
       rethrow;
     }
   }

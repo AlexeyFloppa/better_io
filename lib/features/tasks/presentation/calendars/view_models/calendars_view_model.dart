@@ -2,7 +2,6 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-
 import 'package:better_io/features/tasks/domain/entities/task.dart';
 import 'package:better_io/features/tasks/domain/usecases/hive/get_all_hive_tasks.dart';
 import 'package:better_io/features/tasks/data/models/hive_task_model.dart';
@@ -11,6 +10,7 @@ import 'package:better_io/features/tasks/data/repositories/hive_task_repository.
 class CalendarsViewModel extends ChangeNotifier {
   final GetAllHiveTasksUseCase _getAllTasksUseCase;
   List<Appointment> _appointments = [];
+  List<Task> _tasks = [];
   bool _isLoading = true;
 
   CalendarsViewModel._(this._getAllTasksUseCase) {
@@ -23,6 +23,8 @@ class CalendarsViewModel extends ChangeNotifier {
     return CalendarsViewModel._(GetAllHiveTasksUseCase(repository));
   }
 
+  List<Task> get tasks => _tasks; 
+
   List<Appointment> get appointments => _appointments;
   bool get isLoading => _isLoading;
 
@@ -30,10 +32,13 @@ class CalendarsViewModel extends ChangeNotifier {
     _isLoading = true;
     notifyListeners();
     try {
-      final List<Task> tasks = await _getAllTasksUseCase.execute();
+      final List<Task> _tasks = await _getAllTasksUseCase.execute();
 
-      _appointments = tasks.map((task) {
+    
+
+      _appointments = _tasks.map((task) {
         return Appointment(
+          id: task.id,
           startTime: task.startDate,
           endTime: task.endDate,
           isAllDay: task.isAllDay,
@@ -44,7 +49,7 @@ class CalendarsViewModel extends ChangeNotifier {
         );
       }).toList();
     } catch (e, stack) {
-      log('Error loading tasks: $e', stackTrace: stack);
+      log("Error loading tasks: $e", stackTrace: stack);
       _appointments = [];
     }
     _isLoading = false;
