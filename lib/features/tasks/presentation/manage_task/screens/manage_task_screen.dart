@@ -40,7 +40,7 @@ class _ManageTaskScreenBody extends StatelessWidget {
   Widget build(BuildContext context) {
     final vm = context.watch<ManageTaskViewModel>();
     final disabledColor = Theme.of(context).colorScheme.onSurface.withAlpha(
-        (Theme.of(context).colorScheme.onSurface.alpha * 0.38).round());
+        (Theme.of(context).colorScheme.onSurface.a * 0.38).round());
 
     return Scaffold(
       appBar: AppBar(title: const Text('Manage Task')),
@@ -58,7 +58,7 @@ class _ManageTaskScreenBody extends StatelessWidget {
           EditableListTile(
             title: 'Color:',
             subtitle:
-                '#${vm.color.value.toRadixString(16).padLeft(8, '0').toUpperCase()}',
+                '#${(vm.color.a as int).toRadixString(16).padLeft(2, '0').toUpperCase()}${(vm.color.r as int).toRadixString(16).padLeft(2, '0').toUpperCase()}${(vm.color.g as int).toRadixString(16).padLeft(2, '0').toUpperCase()}${(vm.color.b as int).toRadixString(16).padLeft(2, '0').toUpperCase()}',
             trailing: CircleAvatar(backgroundColor: vm.color, radius: 15),
             onTap: () => ColorPickerDialog.show(
                 context: context,

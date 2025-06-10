@@ -4,9 +4,9 @@ class DesktopAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
 
   const DesktopAppBar({
-    Key? key,
+    super.key,
     required this.title,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

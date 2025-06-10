@@ -11,6 +11,7 @@ class ColorAdapter extends TypeAdapter<Color> {
 
   @override
   void write(BinaryWriter writer, Color obj) {
-    writer.writeUint32(obj.value);
+    writer.writeUint32(obj.value);// ignore: deprecated_member_use
+
   }
 }

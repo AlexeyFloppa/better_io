@@ -36,7 +36,7 @@ class Task {
     String? priority,
   }) {
     return Task(
-      id: this.id, // ✅ preserve original ID
+      id: id, // ✅ preserve original ID
       title: title ?? this.title,
       description: description ?? this.description,
       color: color ?? this.color,

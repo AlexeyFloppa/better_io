@@ -2,7 +2,6 @@ import 'dart:developer';
 import 'package:better_io/features/tasks/data/models/hive_task_model.dart';
 import 'package:better_io/features/tasks/data/repositories/hive_task_repository.dart';
 import 'package:better_io/features/tasks/domain/entities/task.dart';
-import 'package:better_io/features/tasks/domain/usecases/hive/delete_hive_recurrency.dart';
 import 'package:better_io/features/tasks/domain/usecases/hive/delete_hive_task.dart';
 import 'package:better_io/features/tasks/domain/usecases/hive/get_all_hive_tasks.dart';
 import 'package:better_io/features/tasks/domain/usecases/hive/get_hive_recurrency.dart';
@@ -14,7 +13,6 @@ import 'package:syncfusion_flutter_calendar/calendar.dart';
 class CalendarsViewModel extends ChangeNotifier {
   final GetAllHiveTasksUseCase _getAllTasksUseCase;
   final DeleteHiveTaskUseCase _deleteHiveTaskUseCase;
-  final DeleteHiveRecurrencyUseCase _deleteRecurrencyUseCase;
 
   List<Appointment> _appointments = [];
   List<Task> _tasks = [];
@@ -23,7 +21,6 @@ class CalendarsViewModel extends ChangeNotifier {
   CalendarsViewModel._(
     this._getAllTasksUseCase,
     this._deleteHiveTaskUseCase,
-    this._deleteRecurrencyUseCase,
   ) {
     loadTasks();
   }
@@ -35,7 +32,6 @@ class CalendarsViewModel extends ChangeNotifier {
     return CalendarsViewModel._(
       GetAllHiveTasksUseCase(repository),
       DeleteHiveTaskUseCase(repository),
-      DeleteHiveRecurrencyUseCase(repository),
     );
   }
 
@@ -79,13 +75,14 @@ class CalendarsViewModel extends ChangeNotifier {
 
   Future<void> editTask(BuildContext context, String id) async {
     try {
+      final navigator = Navigator.of(context);
       final taskBox = Hive.box<HiveTaskModel>('tasks');
       final repository = HiveTaskRepository(taskBox);
       final getTaskUseCase = GetHiveRecurrencyUseCase(repository, id);
       final Task task = await getTaskUseCase.execute();
 
       // Navigate to ManageTaskScreen in edit mode
-      await Navigator.of(context).push(
+      await navigator.push(
         MaterialPageRoute(
           builder: (_) => ManageTaskScreen(task: task),
         ),

@@ -46,7 +46,6 @@ class _CalendarScheduleScreenState extends State<CalendarScheduleScreen> {
                         final appointment =
                             details.appointments!.first as Appointment;
                         final taskId = appointment.id.toString();
-                        final recurrenceStart = appointment.startTime;
 
                         showModalBottomSheet(
                           context: context,

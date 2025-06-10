@@ -6,7 +6,7 @@ Widget origAppointmentBuilder(
   CalendarAppointmentDetails calendarAppointmentDetails,
 ) {
   final Appointment appointment = calendarAppointmentDetails.appointments.first;
-  return Container(
+  return SizedBox(
     width: calendarAppointmentDetails.bounds.width,
     height: calendarAppointmentDetails.bounds.height,
     child: Text(appointment.subject),

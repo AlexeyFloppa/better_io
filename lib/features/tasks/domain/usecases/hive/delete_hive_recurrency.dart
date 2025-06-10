@@ -14,7 +14,8 @@ class DeleteHiveRecurrencyUseCase {
     final String exdateToAdd = _formatICalUtc(recurrenceDate);
 
     String newRecurrenceRule;
-    if (task.recurrenceRule != null && task.recurrenceRule!.contains(';EXDATE=')) {
+    if (task.recurrenceRule != null &&
+        task.recurrenceRule!.contains(';EXDATE=')) {
       // EXDATE exists, append new date with comma
       final exdateRegex = RegExp(r';EXDATE=([^;]*)');
       final match = exdateRegex.firstMatch(task.recurrenceRule!);
@@ -23,7 +24,7 @@ class DeleteHiveRecurrencyUseCase {
         // Avoid duplicate EXDATE
         final exdateList = existingExdates.split(',');
         if (!exdateList.contains(exdateToAdd)) {
-          final updatedExdates = existingExdates + ',' + exdateToAdd;
+          final updatedExdates = '$existingExdates,$exdateToAdd';
           newRecurrenceRule = task.recurrenceRule!.replaceFirst(
             ';EXDATE=$existingExdates',
             ';EXDATE=$updatedExdates',
@@ -33,11 +34,11 @@ class DeleteHiveRecurrencyUseCase {
         }
       } else {
         // Should not happen, but fallback
-        newRecurrenceRule = task.recurrenceRule! + ';EXDATE=$exdateToAdd';
+        newRecurrenceRule = '${task.recurrenceRule!};EXDATE=$exdateToAdd';
       }
     } else {
       // No EXDATE, add new
-      newRecurrenceRule = task.recurrenceRule! + ';EXDATE=$exdateToAdd';
+      newRecurrenceRule = '${task.recurrenceRule!};EXDATE=$exdateToAdd';
     }
 
     final Task updatedTask = Task(
@@ -48,11 +49,12 @@ class DeleteHiveRecurrencyUseCase {
       startDate: task.startDate,
       endDate: task.endDate,
       isAllDay: task.isAllDay,
-      recurrenceRule: newRecurrenceRule.trim().isEmpty ? null : newRecurrenceRule,
+      recurrenceRule:
+          newRecurrenceRule.trim().isEmpty ? null : newRecurrenceRule,
       duration: task.duration,
       priority: task.priority,
     );
-    log("newRecurrenceRule: ${newRecurrenceRule}");
+    log("newRecurrenceRule: $newRecurrenceRule");
     log("newRecurrenceRule.trim(): ${newRecurrenceRule.trim()}");
     log("GetHiveRecurrencyUseCase: ${updatedTask.recurrenceRule}");
 

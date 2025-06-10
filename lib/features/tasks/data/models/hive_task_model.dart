@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
 part 'hive_task_model.g.dart';
+
 @HiveType(typeId: 0)
 class HiveTaskModel extends HiveObject {
   @HiveField(0)

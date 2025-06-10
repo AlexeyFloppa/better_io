@@ -1,7 +1,6 @@
 import 'package:better_io/features/tasks/data/models/hive_task_model.dart';
 import 'package:better_io/features/tasks/data/repositories/hive_task_repository.dart';
 import 'package:better_io/features/tasks/domain/entities/task.dart';
-import 'package:better_io/features/tasks/domain/usecases/hive/get_all_hive_tasks.dart';
 import 'package:better_io/features/tasks/domain/usecases/hive/get_hive_recurrency.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
@@ -9,8 +8,7 @@ import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 class AppointmentColorIndicator extends StatelessWidget {
   final Color color;
-  const AppointmentColorIndicator({required this.color, Key? key})
-      : super(key: key);
+  const AppointmentColorIndicator({required this.color, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -25,8 +23,7 @@ class AppointmentTimeText extends StatelessWidget {
   final DateTime startTime;
   final DateTime endTime;
   const AppointmentTimeText(
-      {required this.startTime, required this.endTime, Key? key})
-      : super(key: key);
+      {required this.startTime, required this.endTime, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -39,8 +36,7 @@ class AppointmentTimeText extends StatelessWidget {
 
 class AppointmentSubjectText extends StatelessWidget {
   final String subject;
-  const AppointmentSubjectText({required this.subject, Key? key})
-      : super(key: key);
+  const AppointmentSubjectText({required this.subject, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -49,30 +45,28 @@ class AppointmentSubjectText extends StatelessWidget {
 }
 
 class AppointmentDescriptionText extends StatelessWidget {
-  final String Description;
-  const AppointmentDescriptionText({required this.Description, Key? key})
-      : super(key: key);
+  final String description;
+  const AppointmentDescriptionText({required this.description, super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Text(Description);
+    return Text(description);
   }
 }
 
 class AppointmentPriorityText extends StatelessWidget {
-  final String Priority;
-  const AppointmentPriorityText({required this.Priority, Key? key})
-      : super(key: key);
+  final String priority;
+  const AppointmentPriorityText({required this.priority, super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Text(Priority);
+    return Text(priority);
   }
 }
 
 class AppointmentSectionGap extends StatelessWidget {
   final double width;
-  const AppointmentSectionGap({this.width = 24, Key? key}) : super(key: key);
+  const AppointmentSectionGap({this.width = 24, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -107,26 +101,24 @@ Widget scheduleAppointmentBuilder(
       } else if (snapshot.hasData) {
         final task = snapshot.data!;
         return SizedBox(
-          child: Container(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                AppointmentColorIndicator(color: appointment.color),
-                const AppointmentSectionGap(),
-                AppointmentTimeText(
-                  startTime: appointment.startTime,
-                  endTime: appointment.endTime,
-                ),
-                const AppointmentSectionGap(),
-                AppointmentSubjectText(subject: appointment.subject),
-                const AppointmentSectionGap(),
-                AppointmentDescriptionText(Description: task.description),
-                const AppointmentSectionGap(),
-                AppointmentPriorityText(Priority: task.priority),
-                const AppointmentSectionGap(),
-              ],
-            ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              AppointmentColorIndicator(color: appointment.color),
+              const AppointmentSectionGap(),
+              AppointmentTimeText(
+                startTime: appointment.startTime,
+                endTime: appointment.endTime,
+              ),
+              const AppointmentSectionGap(),
+              AppointmentSubjectText(subject: appointment.subject),
+              const AppointmentSectionGap(),
+              AppointmentDescriptionText(description: task.description),
+              const AppointmentSectionGap(),
+              AppointmentPriorityText(priority: task.priority),
+              const AppointmentSectionGap(),
+            ],
           ),
         );
       } else {

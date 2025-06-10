@@ -17,7 +17,6 @@ class ManageTaskViewModel extends ChangeNotifier {
   TimeOfDay endTime = TimeOfDay(hour: TimeOfDay.now().hour + 1, minute: 0);
   bool isAllDay = false;
 
-  
   bool isRepeating = false;
   String repeatType = 'Daily';
   final List<String> repeatOptions = ['Daily', 'Weekly', 'Monthly', 'Yearly'];

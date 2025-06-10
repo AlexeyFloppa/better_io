@@ -5,13 +5,12 @@ class BottomTaskSheet extends StatelessWidget {
   final VoidCallback onTaskRemove;
   // final VoidCallback onRecurrencyRemove;
 
-
   const BottomTaskSheet({
-    Key? key,
+    super.key,
     required this.onEdit,
     required this.onTaskRemove,
     // required this.onRecurrencyRemove,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
