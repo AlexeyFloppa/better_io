@@ -16,5 +16,5 @@ void main() async {
   } catch (e) {
     // Optionally log or handle initialization error
   }
-  runApp(const App());
+  runApp(App());
 }

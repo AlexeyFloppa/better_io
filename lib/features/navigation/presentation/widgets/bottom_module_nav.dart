@@ -18,7 +18,11 @@ class BottomModuleNav extends StatelessWidget {
       onDestinationSelected: (index) {
         final module = modules[index];
         controller.setModule(module.id);
-        controller.setSubmodule(module.submodules.first.id);
+        if (module.submodules.isNotEmpty) {
+          controller.setSubmodule(module.submodules.first.id);
+        } else {
+          controller.setSubmodule(''); // or some default/reset value
+        }
       },
       destinations: modules
           .map((m) => NavigationDestination(
