@@ -5,7 +5,7 @@ class DeleteHiveTaskUseCase {
 
   DeleteHiveTaskUseCase(this.repository);
 
-  void execute(String id) {
-    repository.deleteTask(id);
+  Future<void> execute(String id) {
+    return repository.deleteTask(id);
   }
 }

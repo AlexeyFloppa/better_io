@@ -6,6 +6,7 @@ part of 'hive_task_model.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
+/// Hive adapter for [HiveTaskModel].
 class TaskModelAdapter extends TypeAdapter<HiveTaskModel> {
   @override
   final int typeId = 0;
@@ -17,7 +18,6 @@ class TaskModelAdapter extends TypeAdapter<HiveTaskModel> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return HiveTaskModel(
-      taskId: fields[0] as int,
       title: fields[1] as String,
       description: fields[2] as String,
       color: fields[3] as Color,
@@ -33,9 +33,7 @@ class TaskModelAdapter extends TypeAdapter<HiveTaskModel> {
   @override
   void write(BinaryWriter writer, HiveTaskModel obj) {
     writer
-      ..writeByte(10)
-      ..writeByte(0)
-      ..write(obj.taskId)
+      ..writeByte(9)
       ..writeByte(1)
       ..write(obj.title)
       ..writeByte(2)

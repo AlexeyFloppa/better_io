@@ -2,7 +2,7 @@ import 'package:better_io/features/tasks/data/models/hive_task_model.dart';
 import 'package:better_io/features/tasks/data/repositories/hive_task_repository.dart';
 import 'package:better_io/features/tasks/domain/entities/task.dart';
 import 'package:better_io/features/tasks/domain/usecases/hive/get_all_hive_tasks.dart';
-import 'package:better_io/features/tasks/domain/usecases/hive/get_hive_task.dart';
+import 'package:better_io/features/tasks/domain/usecases/hive/get_hive_recurrency.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
@@ -89,8 +89,8 @@ Widget scheduleAppointmentBuilder(
 
   final taskBox = Hive.box<HiveTaskModel>('tasks');
   final repository = HiveTaskRepository(taskBox);
-  final GetHiveTaskUseCase getTaskUseCase =
-      GetHiveTaskUseCase(repository, appointmentId);
+  final GetHiveRecurrencyUseCase getTaskUseCase =
+      GetHiveRecurrencyUseCase(repository, appointmentId);
   final Future<Task> taskFuture = getTaskUseCase.execute();
 
   return FutureBuilder<Task>(

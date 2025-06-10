@@ -1,40 +1,54 @@
 import 'dart:developer';
-import 'package:flutter/material.dart';
-import 'package:syncfusion_flutter_calendar/calendar.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import 'package:better_io/features/tasks/domain/entities/task.dart';
-import 'package:better_io/features/tasks/domain/usecases/hive/get_all_hive_tasks.dart';
 import 'package:better_io/features/tasks/data/models/hive_task_model.dart';
 import 'package:better_io/features/tasks/data/repositories/hive_task_repository.dart';
+import 'package:better_io/features/tasks/domain/entities/task.dart';
+import 'package:better_io/features/tasks/domain/usecases/hive/delete_hive_recurrency.dart';
+import 'package:better_io/features/tasks/domain/usecases/hive/delete_hive_task.dart';
+import 'package:better_io/features/tasks/domain/usecases/hive/get_all_hive_tasks.dart';
+import 'package:better_io/features/tasks/domain/usecases/hive/get_hive_recurrency.dart';
+import 'package:better_io/features/tasks/presentation/manage_task/screens/manage_task_screen.dart';
+import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 class CalendarsViewModel extends ChangeNotifier {
   final GetAllHiveTasksUseCase _getAllTasksUseCase;
+  final DeleteHiveTaskUseCase _deleteHiveTaskUseCase;
+  final DeleteHiveRecurrencyUseCase _deleteRecurrencyUseCase;
+
   List<Appointment> _appointments = [];
   List<Task> _tasks = [];
   bool _isLoading = true;
 
-  CalendarsViewModel._(this._getAllTasksUseCase) {
+  CalendarsViewModel._(
+    this._getAllTasksUseCase,
+    this._deleteHiveTaskUseCase,
+    this._deleteRecurrencyUseCase,
+  ) {
     loadTasks();
   }
 
   factory CalendarsViewModel() {
     final taskBox = Hive.box<HiveTaskModel>('tasks');
     final repository = HiveTaskRepository(taskBox);
-    return CalendarsViewModel._(GetAllHiveTasksUseCase(repository));
+
+    return CalendarsViewModel._(
+      GetAllHiveTasksUseCase(repository),
+      DeleteHiveTaskUseCase(repository),
+      DeleteHiveRecurrencyUseCase(repository),
+    );
   }
 
-  List<Task> get tasks => _tasks; 
-
+  List<Task> get tasks => _tasks;
   List<Appointment> get appointments => _appointments;
   bool get isLoading => _isLoading;
 
   Future<void> loadTasks() async {
     _isLoading = true;
     notifyListeners();
-    try {
-      final List<Task> _tasks = await _getAllTasksUseCase.execute();
 
-    
+    try {
+      _tasks = await _getAllTasksUseCase.execute();
 
       _appointments = _tasks.map((task) {
         return Appointment(
@@ -50,9 +64,36 @@ class CalendarsViewModel extends ChangeNotifier {
       }).toList();
     } catch (e, stack) {
       log("Error loading tasks: $e", stackTrace: stack);
+      _tasks = [];
       _appointments = [];
     }
+
     _isLoading = false;
     notifyListeners();
+  }
+
+  Future<void> deleteTask(String id) async {
+    await _deleteHiveTaskUseCase.execute(id);
+    await loadTasks();
+  }
+
+  Future<void> editTask(BuildContext context, String id) async {
+    try {
+      final taskBox = Hive.box<HiveTaskModel>('tasks');
+      final repository = HiveTaskRepository(taskBox);
+      final getTaskUseCase = GetHiveRecurrencyUseCase(repository, id);
+      final Task task = await getTaskUseCase.execute();
+
+      // Navigate to ManageTaskScreen in edit mode
+      await Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (_) => ManageTaskScreen(task: task),
+        ),
+      );
+      // Optionally reload tasks after editing
+      await loadTasks();
+    } catch (e, stack) {
+      log("Error editing task: $e", stackTrace: stack);
+    }
   }
 }

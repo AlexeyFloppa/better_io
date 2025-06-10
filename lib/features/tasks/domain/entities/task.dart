@@ -24,9 +24,7 @@ class Task {
     required this.duration,
     required this.priority,
   });
-
   Task copyWith({
-    String? id,
     String? title,
     String? description,
     Color? color,
@@ -38,7 +36,7 @@ class Task {
     String? priority,
   }) {
     return Task(
-      id: id ?? this.id,
+      id: this.id, // ✅ preserve original ID
       title: title ?? this.title,
       description: description ?? this.description,
       color: color ?? this.color,
