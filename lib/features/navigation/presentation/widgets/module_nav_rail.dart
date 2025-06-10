@@ -18,13 +18,13 @@ class ModuleNavRail extends StatelessWidget {
         : null;
 
     return Container(
-      color: Theme.of(context).appBarTheme.backgroundColor ??
-          Theme.of(context).colorScheme.surface,
+      color: Theme.of(context).colorScheme.surfaceContainerLow,
       width: 90,
       child: Column(
         children: [
           Expanded(
             child: NavigationRail(
+              backgroundColor: Theme.of(context).colorScheme.surfaceContainerLow,
               selectedIndex: selectedIndex,
               labelType: NavigationRailLabelType.all,
               onDestinationSelected: (index) {
@@ -43,9 +43,11 @@ class ModuleNavRail extends StatelessWidget {
             ),
           ),
           // TODO: Rewrite it becasue if we have no button, we have shirink sized box, with padding, which is not good
-          Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: currentModule?.bottomButton),
+            if (currentModule?.bottomButton != null)
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: currentModule!.bottomButton,
+              ),
         ],
       ),
     );

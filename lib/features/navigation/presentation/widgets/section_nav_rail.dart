@@ -14,6 +14,7 @@ class SectionNavRail extends StatelessWidget {
         sections.indexWhere((s) => s.id == controller.selectedSectionId);
 
     return NavigationRail(
+      backgroundColor: Theme.of(context).colorScheme.surfaceContainerLow,
       selectedIndex: selectedIndex,
       onDestinationSelected: (index) {
         final section = sections[index];

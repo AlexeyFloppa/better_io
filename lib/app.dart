@@ -16,7 +16,7 @@ class App extends StatelessWidget {
       title: 'Better.io',
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
-      themeMode: ThemeMode.system,
+      themeMode: ThemeMode.dark,
       home: ChangeNotifierProvider(
         create: (_) => NavController(),
         child: AdaptiveLayout(),

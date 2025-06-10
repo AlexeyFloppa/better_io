@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import '../widgets/module_nav_rail.dart';
 import '../widgets/section_nav_rail.dart';
 import '../widgets/submodule_tab_bar.dart';
+import '../widgets/desktop_appbar.dart';
 
 class DesktopLayout extends StatelessWidget {
   const DesktopLayout({super.key});
@@ -16,8 +17,8 @@ class DesktopLayout extends StatelessWidget {
     final currentSub = NavSelector.getCurrentSubmodule(controller);
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(currentModule.title),
+      appBar: DesktopAppBar(
+        title: currentModule.title,
       ),
       body: Row(
         children: [
