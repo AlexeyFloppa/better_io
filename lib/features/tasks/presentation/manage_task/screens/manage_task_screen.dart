@@ -152,11 +152,11 @@ class _ManageTaskScreenBody extends StatelessWidget {
               onTap: () => _editDropdown(
                   context,
                   'Duration Type',
-                  ['Forever', 'Until Date', 'Amount of Times'],
+                  ['Forever', 'Until', 'Count'],
                   vm.durationType,
                   vm.setDurationType),
             ),
-          if (vm.isRepeating && vm.durationType == 'Until Date')
+          if (vm.isRepeating && vm.durationType == 'Until')
             EditableListTile(
               title: 'Duration Date:',
               subtitle: vm.durationDate != null
@@ -165,11 +165,11 @@ class _ManageTaskScreenBody extends StatelessWidget {
               onTap: () => _selectDate(context, vm.setDurationDate,
                   vm.durationDate ?? DateTime.now()),
             ),
-          if (vm.isRepeating && vm.durationType == 'Amount of Times')
+          if (vm.isRepeating && vm.durationType == 'Count')
             EditableListTile(
-              title: 'Duration Amount:',
-              subtitle: vm.durationAmount?.toString() ?? 'Set amount',
-              onTap: () => _editDurationAmount(context, vm),
+              title: 'Duration Count:',
+              subtitle: vm.durationCount?.toString() ?? 'Set Count',
+              onTap: () => _editDurationCount(context, vm),
             ),
           const SizedBox(height: 80),
         ],
@@ -279,12 +279,12 @@ class _ManageTaskScreenBody extends StatelessWidget {
     });
   }
 
-  void _editDurationAmount(BuildContext context, ManageTaskViewModel vm) {
+  void _editDurationCount(BuildContext context, ManageTaskViewModel vm) {
     showDialog(
       context: context,
       builder: (_) => DurationPickerDialog(
-        initialAmount: vm.durationAmount,
-        onSave: vm.setDurationAmount,
+        initialCount: vm.durationCount,
+        onSave: vm.setDurationCount,
       ),
     );
   }

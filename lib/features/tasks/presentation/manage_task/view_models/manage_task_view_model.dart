@@ -27,7 +27,7 @@ class ManageTaskViewModel extends ChangeNotifier {
 
   String durationType = 'Forever';
   DateTime? durationDate;
-  int? durationAmount;
+  int? durationCount;
 
   String priority = 'No Priority';
   final List<String> priorityOptions = [
@@ -122,7 +122,7 @@ class ManageTaskViewModel extends ChangeNotifier {
     durationType = value;
     if (value == 'Forever') {
       durationDate = null;
-      durationAmount = null;
+      durationCount = null;
     }
     notifyListeners();
   }
@@ -132,8 +132,8 @@ class ManageTaskViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setDurationAmount(int? value) {
-    durationAmount = value;
+  void setDurationCount(int? value) {
+    durationCount = value;
     notifyListeners();
   }
 
@@ -214,6 +214,14 @@ class ManageTaskViewModel extends ChangeNotifier {
     } else if (repeatType == 'Yearly') {
       parts.add('BYYEARDAY=${yearlyRepeatDays.join(',')}');
     }
+
+    if (durationType == 'Until' && durationDate != null) {
+      final until = durationDate!.toUtc().add(const Duration(days: 1)).toIso8601String().split('T')[0];
+      parts.add('UNTIL=$until');
+    } else if (durationType == 'Count' && durationCount != null) {
+      parts.add('COUNT=$durationCount');
+    }
+    print('Generated RRULE: ${parts.join(';')}');
     return 'RRULE:${parts.join(';')}';
   }
 }
