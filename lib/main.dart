@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -14,7 +16,7 @@ void main() async {
     Hive.registerAdapter(ColorAdapter());
     await Hive.openBox<HiveTaskModel>('tasks');
   } catch (e) {
-    // Optionally log or handle initialization error
+    log("Error initializing Hive: $e");
   }
   runApp(App());
 }
