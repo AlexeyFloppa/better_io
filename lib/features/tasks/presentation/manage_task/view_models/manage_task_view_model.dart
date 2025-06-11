@@ -161,6 +161,96 @@ class ManageTaskViewModel extends ChangeNotifier {
       endTime = TimeOfDay(hour: task.endDate.hour, minute: task.endDate.minute);
     }
     priority = task.priority;
+
+    // Parse recurrence rule if present
+    if (task.recurrenceRule != null) {
+      final rule = task.recurrenceRule!;
+      final rrule = rule.startsWith('RRULE:') ? rule.substring(6) : rule;
+      final parts = <String, String>{};
+      for (final part in rrule.split(';')) {
+        final idx = part.indexOf('=');
+        if (idx > 0) {
+          parts[part.substring(0, idx)] = part.substring(idx + 1);
+        }
+      }
+      // FREQ
+      if (parts.containsKey('FREQ')) {
+        final freq = parts['FREQ']!;
+        if (repeatOptions.contains(freq[0] + freq.substring(1).toLowerCase())) {
+          repeatType = freq[0] + freq.substring(1).toLowerCase();
+        } else {
+          repeatType = repeatOptions.firstWhere((e) => e.toUpperCase() == freq,
+              orElse: () => 'Daily');
+        }
+      }
+      // INTERVAL
+      if (parts.containsKey('INTERVAL')) {
+        repeatInterval = int.tryParse(parts['INTERVAL']!) ?? 1;
+      }
+      // BYDAY (Weekly)
+      if (parts.containsKey('BYDAY')) {
+        final map = {
+          'MO': 1,
+          'TU': 2,
+          'WE': 3,
+          'TH': 4,
+          'FR': 5,
+          'SA': 6,
+          'SU': 7
+        };
+        weeklyRepeatDays =
+            parts['BYDAY']!.split(',').map((d) => map[d] ?? 1).toList();
+      } else {
+        weeklyRepeatDays = [];
+      }
+      // BYMONTHDAY (Monthly)
+      if (parts.containsKey('BYMONTHDAY')) {
+        monthlyRepeatDays = parts['BYMONTHDAY']!
+            .split(',')
+            .map((d) => int.tryParse(d) ?? 1)
+            .toList();
+      } else {
+        monthlyRepeatDays = [];
+      }
+      // BYYEARDAY (Yearly)
+      if (parts.containsKey('BYYEARDAY')) {
+        yearlyRepeatDays = parts['BYYEARDAY']!
+            .split(',')
+            .map((d) => int.tryParse(d) ?? 1)
+            .toList();
+      } else {
+        yearlyRepeatDays = [];
+      }
+      // UNTIL (Duration Type: Until)
+      if (parts.containsKey('UNTIL')) {
+        durationType = 'Until';
+        try {
+          durationDate = DateTime.parse(parts['UNTIL']!);
+        } catch (_) {
+          durationDate = null;
+        }
+        durationCount = null;
+      } else if (parts.containsKey('COUNT')) {
+        durationType = 'Count';
+        durationCount = int.tryParse(parts['COUNT']!) ?? 1;
+        durationDate = null;
+      } else {
+        durationType = 'Forever';
+        durationDate = null;
+        durationCount = null;
+      }
+    } else {
+      // Reset recurrence fields if not repeating
+      repeatType = 'Daily';
+      repeatInterval = 1;
+      weeklyRepeatDays = [];
+      monthlyRepeatDays = [];
+      yearlyRepeatDays = [];
+      durationType = 'Forever';
+      durationDate = null;
+      durationCount = null;
+    }
+
     notifyListeners();
   }
 
@@ -216,12 +306,15 @@ class ManageTaskViewModel extends ChangeNotifier {
     }
 
     if (durationType == 'Until' && durationDate != null) {
-      final until = durationDate!.toUtc().add(const Duration(days: 1)).toIso8601String().split('T')[0];
+      final until = durationDate!
+          .toUtc()
+          .add(const Duration(days: 1))
+          .toIso8601String()
+          .split('T')[0];
       parts.add('UNTIL=$until');
     } else if (durationType == 'Count' && durationCount != null) {
       parts.add('COUNT=$durationCount');
     }
-    print('Generated RRULE: ${parts.join(';')}');
     return 'RRULE:${parts.join(';')}';
   }
 }

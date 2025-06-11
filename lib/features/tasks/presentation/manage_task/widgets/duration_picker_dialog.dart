@@ -27,9 +27,9 @@ class DurationPickerDialog extends StatelessWidget {
       actions: [
         TextButton(
           onPressed: () {
-            final int? Count = int.tryParse(controller.text);
-            if (Count != null) {
-              onSave(Count);
+            final int? count = int.tryParse(controller.text);
+            if (count != null) {
+              onSave(count);
             }
             Navigator.of(context).pop();
           },
