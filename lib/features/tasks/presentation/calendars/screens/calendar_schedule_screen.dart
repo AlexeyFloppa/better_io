@@ -1,6 +1,6 @@
 import 'package:better_io/features/tasks/data/data_sources/task_data_source.dart';
 import 'package:better_io/features/tasks/presentation/calendars/widgets/bottom_task_sheet.dart';
-import 'package:better_io/features/tasks/presentation/calendars/widgets/schedule_appoinment_builder.dart';
+import 'package:better_io/features/tasks/presentation/calendars/widgets/appoinemnt_builders/schedule_appoinment_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
@@ -38,6 +38,7 @@ class _CalendarScheduleScreenState extends State<CalendarScheduleScreen> {
                     appointmentBuilder: scheduleAppointmentBuilder,
                     scheduleViewSettings: const ScheduleViewSettings(
                       hideEmptyScheduleWeek: true,
+                      appointmentItemHeight: 68,
                       monthHeaderSettings: MonthHeaderSettings(height: 0),
                       weekHeaderSettings: WeekHeaderSettings(height: 0),
                     ),
