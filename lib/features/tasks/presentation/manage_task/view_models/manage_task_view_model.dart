@@ -13,8 +13,8 @@ class ManageTaskViewModel extends ChangeNotifier {
 
   DateTime startDate = DateTime.now().subtract(const Duration(minutes: 1));
   DateTime endDate = DateTime.now().copyWith(hour: 23, minute: 59);
-  TimeOfDay startTime = TimeOfDay.now();
-  TimeOfDay endTime = TimeOfDay(hour: TimeOfDay.now().hour + 1, minute: 0);
+  TimeOfDay startTime = TimeOfDay(hour: TimeOfDay.now().hour + 1, minute: 0);
+  TimeOfDay endTime = TimeOfDay(hour: TimeOfDay.now().hour + 2, minute: 0);
   bool isAllDay = false;
 
   bool isRepeating = false;

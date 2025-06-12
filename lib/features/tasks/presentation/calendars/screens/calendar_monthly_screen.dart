@@ -20,6 +20,12 @@ class CalendarMonthlyScreen extends StatelessWidget {
                 : SfCalendar(
                     headerHeight: 0,
                     view: CalendarView.month,
+                    monthViewSettings: const MonthViewSettings(
+                      showAgenda: true,
+                      // agendaItemHeight: 50,
+                      // appointmentDisplayMode:
+                      //     MonthAppointmentDisplayMode.appointment,
+                    ),
                     dataSource: TaskDataSource(viewModel.appointments),
                   ),
           );
