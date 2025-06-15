@@ -11,6 +11,7 @@ class Task {
   final String? recurrenceRule;
   final String duration;
   final String priority;
+  final String category; // Optional category field
 
   Task({
     required this.id,
@@ -23,6 +24,7 @@ class Task {
     required this.recurrenceRule,
     required this.duration,
     required this.priority,
+    required this.category,
   });
   Task copyWith({
     String? title,
@@ -34,6 +36,7 @@ class Task {
     String? recurrenceRule,
     String? duration,
     String? priority,
+    String? category, // Category can be changed in copy
   }) {
     return Task(
       id: id, // ✅ preserve original ID
@@ -46,6 +49,7 @@ class Task {
       recurrenceRule: recurrenceRule ?? this.recurrenceRule,
       duration: duration ?? this.duration,
       priority: priority ?? this.priority,
+      category: category ?? this.category, // Category is not changed in copy
     );
   }
 }

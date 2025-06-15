@@ -53,6 +53,7 @@ class DeleteHiveRecurrencyUseCase {
           newRecurrenceRule.trim().isEmpty ? null : newRecurrenceRule,
       duration: task.duration,
       priority: task.priority,
+      category: task.category,
     );
     log("newRecurrenceRule: $newRecurrenceRule");
     log("newRecurrenceRule.trim(): ${newRecurrenceRule.trim()}");

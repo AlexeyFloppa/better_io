@@ -12,7 +12,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   try {
     await Hive.initFlutter();
-    Hive.registerAdapter(TaskModelAdapter());
+    Hive.registerAdapter(HiveTaskModelAdapter());
     Hive.registerAdapter(ColorAdapter());
     await Hive.openBox<HiveTaskModel>('tasks');
   } catch (e) {

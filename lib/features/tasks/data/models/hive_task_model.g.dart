@@ -6,8 +6,7 @@ part of 'hive_task_model.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
-/// Hive adapter for [HiveTaskModel].
-class TaskModelAdapter extends TypeAdapter<HiveTaskModel> {
+class HiveTaskModelAdapter extends TypeAdapter<HiveTaskModel> {
   @override
   final int typeId = 0;
 
@@ -18,40 +17,43 @@ class TaskModelAdapter extends TypeAdapter<HiveTaskModel> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return HiveTaskModel(
-      title: fields[1] as String,
-      description: fields[2] as String,
-      color: fields[3] as Color,
-      startDate: fields[4] as DateTime,
-      endDate: fields[5] as DateTime,
-      isAllDay: fields[6] as bool,
-      recurrenceRule: fields[7] as String?,
-      duration: fields[8] as String,
-      priority: fields[9] as String,
+      title: fields[0] as String,
+      description: fields[1] as String,
+      color: fields[2] as Color,
+      startDate: fields[3] as DateTime,
+      endDate: fields[4] as DateTime,
+      isAllDay: fields[5] as bool,
+      recurrenceRule: fields[6] as String?,
+      duration: fields[7] as String,
+      priority: fields[8] as String,
+      category: fields[9] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, HiveTaskModel obj) {
     writer
-      ..writeByte(9)
-      ..writeByte(1)
+      ..writeByte(10)
+      ..writeByte(0)
       ..write(obj.title)
-      ..writeByte(2)
+      ..writeByte(1)
       ..write(obj.description)
-      ..writeByte(3)
+      ..writeByte(2)
       ..write(obj.color)
-      ..writeByte(4)
+      ..writeByte(3)
       ..write(obj.startDate)
-      ..writeByte(5)
+      ..writeByte(4)
       ..write(obj.endDate)
-      ..writeByte(6)
+      ..writeByte(5)
       ..write(obj.isAllDay)
-      ..writeByte(7)
+      ..writeByte(6)
       ..write(obj.recurrenceRule)
-      ..writeByte(8)
+      ..writeByte(7)
       ..write(obj.duration)
+      ..writeByte(8)
+      ..write(obj.priority)
       ..writeByte(9)
-      ..write(obj.priority);
+      ..write(obj.category);
   }
 
   @override
@@ -60,7 +62,7 @@ class TaskModelAdapter extends TypeAdapter<HiveTaskModel> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is TaskModelAdapter &&
+      other is HiveTaskModelAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

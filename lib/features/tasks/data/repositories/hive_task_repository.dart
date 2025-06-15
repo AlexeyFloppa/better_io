@@ -46,6 +46,7 @@ class HiveTaskRepository implements TaskRepository {
       recurrenceRule: hiveTask.recurrenceRule,
       duration: hiveTask.duration,
       priority: hiveTask.priority,
+      category: hiveTask.category,
     );
   }
 
@@ -60,6 +61,7 @@ class HiveTaskRepository implements TaskRepository {
       recurrenceRule: task.recurrenceRule,
       duration: task.duration,
       priority: task.priority,
+      category: task.category,
     );
   }
 }

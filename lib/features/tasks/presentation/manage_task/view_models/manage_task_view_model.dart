@@ -1,4 +1,5 @@
 // manage_task_view_model.dart
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:better_io/features/tasks/domain/entities/task.dart';
 import 'package:better_io/features/tasks/domain/usecases/hive/set_hive_task.dart';
@@ -28,6 +29,16 @@ class ManageTaskViewModel extends ChangeNotifier {
   String durationType = 'Forever';
   DateTime? durationDate;
   int? durationCount;
+
+  String category = 'General'; // Default category
+  final List<String> categoryOptions = [
+    'General',
+    'Work',
+    'Personal',
+    'Health',
+    'Finance',
+    'Education'
+  ];
 
   String priority = 'No Priority';
   final List<String> priorityOptions = [
@@ -134,6 +145,10 @@ class ManageTaskViewModel extends ChangeNotifier {
 
   void setDurationCount(int? value) {
     durationCount = value;
+    notifyListeners();
+  }
+  void setCategory(String value) {
+    category = value;
     notifyListeners();
   }
 
@@ -286,7 +301,8 @@ class ManageTaskViewModel extends ChangeNotifier {
       isAllDay: isAllDay,
       recurrenceRule: recurrenceRule,
       duration: durationType,
-      priority: priority,
+      priority: priority, 
+      category: category,
     );
   }
 

@@ -71,6 +71,12 @@ class _ManageTaskScreenBody extends StatelessWidget {
                 onColorPicked: vm.setColor),
           ),
           ListTile(
+            title: const Text('Category:'),
+            subtitle: Text(vm.category),
+            onTap: () => _editDropdown(context, 'Category', vm.categoryOptions,
+                vm.category, vm.setCategory),
+          ),
+          ListTile(
             title: const Text('Priority:'),
             subtitle: Text(vm.priority),
             onTap: () => _editDropdown(context, 'Priority', vm.priorityOptions,

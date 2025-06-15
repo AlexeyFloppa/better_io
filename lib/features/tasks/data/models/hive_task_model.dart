@@ -32,6 +32,9 @@ class HiveTaskModel extends HiveObject {
   @HiveField(8)
   final String priority;
 
+  @HiveField(9)
+  final String category;
+
   HiveTaskModel({
     required this.title,
     required this.description,
@@ -42,5 +45,6 @@ class HiveTaskModel extends HiveObject {
     this.recurrenceRule,
     required this.duration,
     required this.priority,
+    required this.category,
   });
 }
