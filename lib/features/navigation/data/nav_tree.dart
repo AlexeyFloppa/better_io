@@ -1,10 +1,10 @@
 import 'package:better_io/features/example_screens.dart';
 import 'package:better_io/features/home/home_screen.dart';
-import 'package:better_io/features/tasks/presentation/calendars/screens/calendar_daily_screen.dart';
-import 'package:better_io/features/tasks/presentation/calendars/screens/calendar_monthly_screen.dart';
-import 'package:better_io/features/tasks/presentation/calendars/screens/calendar_schedule_screen.dart';
-import 'package:better_io/features/tasks/presentation/calendars/screens/calendar_weekly_screen.dart';
-import 'package:better_io/features/tasks/presentation/manage_task/screens/manage_task_screen.dart';
+import 'package:better_io/features/tasks/presentation/calendars/views/calendar_daily_view.dart';
+import 'package:better_io/features/tasks/presentation/calendars/views/calendar_monthly_view.dart';
+import 'package:better_io/features/tasks/presentation/calendars/views/calendar_schedule_view.dart';
+import 'package:better_io/features/tasks/presentation/calendars/views/calendar_weekly_view.dart';
+import 'package:better_io/features/tasks/presentation/task_management/views/manage_task_view.dart';
 import 'package:better_io/shared/widgets/fab_button.dart';
 import 'package:flutter/material.dart';
 
@@ -52,27 +52,27 @@ final List<SectionNavData> appSections = [
                 id: 'tasks-schedule-calendar',
                 title: 'Schedule',
                 icon: Icons.schedule,
-                screen: CalendarScheduleScreen()),
+                screen: CalendarScheduleView()),
             SubmoduleNavData(
                 id: 'tasks-daily-calendar',
                 title: 'Daily',
                 icon: Icons.calendar_view_day,
-                screen: CalendarDailyScreen()),
+                screen: CalendarDailyView()),
             SubmoduleNavData(
                 id: 'tasks-weekly-calendar',
                 title: 'Weekly',
                 icon: Icons.calendar_view_week,
-                screen: CalendarWeeklyScreen()),
+                screen: CalendarWeeklyView()),
             SubmoduleNavData(
                 id: 'tasks-monthly-calendar',
                 title: 'Monthly',
                 icon: Icons.calendar_view_month,
-                screen: CalendarMonthlyScreen()),
+                screen: CalendarMonthlyView()),
           ],
           bottomButton: FABButton(
             onTap: (context) {
               Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => ManageTaskScreen()),
+                MaterialPageRoute(builder: (context) => ManageTaskView()),
               );
             },
           )),

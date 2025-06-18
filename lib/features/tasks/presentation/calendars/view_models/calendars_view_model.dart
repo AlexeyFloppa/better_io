@@ -1,11 +1,11 @@
 import 'dart:developer';
-import 'package:better_io/features/tasks/data/models/hive_task_model.dart';
+import 'package:better_io/features/tasks/data/models/hive/hive_task_model.dart';
 import 'package:better_io/features/tasks/data/repositories/hive_task_repository.dart';
 import 'package:better_io/features/tasks/domain/entities/task.dart';
 import 'package:better_io/features/tasks/domain/usecases/hive/delete_hive_task.dart';
 import 'package:better_io/features/tasks/domain/usecases/hive/get_all_hive_tasks.dart';
 import 'package:better_io/features/tasks/domain/usecases/hive/get_hive_recurrency.dart';
-import 'package:better_io/features/tasks/presentation/manage_task/screens/manage_task_screen.dart';
+import 'package:better_io/features/tasks/presentation/task_management/views/manage_task_view.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
@@ -84,7 +84,7 @@ class CalendarsViewModel extends ChangeNotifier {
       // Navigate to ManageTaskScreen in edit mode
       await navigator.push(
         MaterialPageRoute(
-          builder: (_) => ManageTaskScreen(task: task),
+          builder: (_) => ManageTaskView(task: task),
         ),
       );
       // Optionally reload tasks after editing

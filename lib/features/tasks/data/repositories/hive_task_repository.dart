@@ -1,7 +1,7 @@
 import 'package:better_io/features/tasks/domain/repositories/task_repository.dart';
 import 'package:better_io/features/tasks/domain/entities/task.dart';
 import 'package:hive/hive.dart';
-import 'package:better_io/features/tasks/data/models/hive_task_model.dart';
+import 'package:better_io/features/tasks/data/models/hive/hive_task_model.dart';
 
 class HiveTaskRepository implements TaskRepository {
   final Box<HiveTaskModel> _taskBox;

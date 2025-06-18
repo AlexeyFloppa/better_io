@@ -7,16 +7,16 @@ import 'package:hive/hive.dart';
 import 'package:better_io/features/tasks/domain/entities/task.dart';
 import 'package:better_io/features/tasks/domain/usecases/hive/set_hive_task.dart';
 import 'package:better_io/features/tasks/data/repositories/hive_task_repository.dart';
-import 'package:better_io/features/tasks/presentation/manage_task/widgets/color_picker.dart';
-import 'package:better_io/features/tasks/presentation/manage_task/widgets/editable_list_tile.dart';
-import 'package:better_io/features/tasks/presentation/manage_task/widgets/text_input_dialog.dart';
-import 'package:better_io/features/tasks/presentation/manage_task/widgets/duration_picker_dialog.dart';
-import 'package:better_io/features/tasks/presentation/manage_task/widgets/repeat_days_picker.dart';
-import 'package:better_io/features/tasks/presentation/manage_task/view_models/manage_task_view_model.dart';
+import 'package:better_io/features/tasks/presentation/task_management/widgets/color_picker.dart';
+import 'package:better_io/features/tasks/presentation/task_management/widgets/editable_list_tile.dart';
+import 'package:better_io/features/tasks/presentation/task_management/widgets/text_input_dialog.dart';
+import 'package:better_io/features/tasks/presentation/task_management/widgets/duration_picker_dialog.dart';
+import 'package:better_io/features/tasks/presentation/task_management/widgets/repeat_days_picker.dart';
+import 'package:better_io/features/tasks/presentation/task_management/view_models/manage_task_view_model.dart';
 
-class ManageTaskScreen extends StatelessWidget {
+class ManageTaskView extends StatelessWidget {
   final Task? task;
-  const ManageTaskScreen({super.key, this.task});
+  const ManageTaskView({super.key, this.task});
 
   @override
   Widget build(BuildContext context) {
@@ -28,13 +28,13 @@ class ManageTaskScreen extends StatelessWidget {
         if (task != null) vm.loadFromTask(task!);
         return vm;
       },
-      child: const _ManageTaskScreenBody(),
+      child: const _ManageTaskViewBody(),
     );
   }
 }
 
-class _ManageTaskScreenBody extends StatelessWidget {
-  const _ManageTaskScreenBody();
+class _ManageTaskViewBody extends StatelessWidget {
+  const _ManageTaskViewBody();
 
   @override
   Widget build(BuildContext context) {

@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import 'package:better_io/app.dart';
-import 'features/tasks/data/models/hive_task_model.dart';
-import 'package:better_io/features/tasks/data/models/hive_color_adapter.dart';
+import 'features/tasks/data/models/hive/hive_task_model.dart';
+import 'package:better_io/features/tasks/data/models/hive/hive_color_adapter.dart';
 
 /// Entry point for the app.
 void main() async {

@@ -7,14 +7,14 @@ import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 import '../view_models/calendars_view_model.dart';
 
-class CalendarScheduleScreen extends StatefulWidget {
-  const CalendarScheduleScreen({super.key});
+class CalendarScheduleView extends StatefulWidget {
+  const CalendarScheduleView({super.key});
 
   @override
-  State<CalendarScheduleScreen> createState() => _CalendarScheduleScreenState();
+  State<CalendarScheduleView> createState() => _CalendarScheduleViewState();
 }
 
-class _CalendarScheduleScreenState extends State<CalendarScheduleScreen> {
+class _CalendarScheduleViewState extends State<CalendarScheduleView> {
   late final CalendarsViewModel viewModel;
 
   @override
