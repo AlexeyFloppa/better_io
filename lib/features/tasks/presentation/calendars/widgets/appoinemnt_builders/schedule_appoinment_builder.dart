@@ -1,5 +1,4 @@
-
-import 'package:better_io/features/tasks/data/models/hive_task_model.dart';
+import 'package:better_io/features/tasks/data/models/hive/hive_task_model.dart';
 import 'package:better_io/features/tasks/data/repositories/hive_task_repository.dart';
 import 'package:better_io/features/tasks/domain/entities/task.dart';
 import 'package:better_io/features/tasks/domain/usecases/hive/get_hive_recurrency.dart';
@@ -34,8 +33,8 @@ class AppointmentTimeText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
-      '${TimeOfDay.fromDateTime(startTime).format(context)} - '
-      '${TimeOfDay.fromDateTime(endTime).format(context)}',
+      '${TimeOfDay.fromDateTime(startTime.toLocal()).format(context)} - '
+      '${TimeOfDay.fromDateTime(endTime.toLocal()).format(context)}',
       style: style,
     );
   }
@@ -48,7 +47,12 @@ class AppointmentSubjectText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(subject, style: style);
+    return Text(
+      subject,
+      style: style,
+      maxLines: 1,
+      overflow: TextOverflow.ellipsis,
+    );
   }
 }
 
@@ -60,7 +64,12 @@ class AppointmentDescriptionText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(description, style: style);
+    return Text(
+      description,
+      style: style,
+      maxLines: 1,
+      overflow: TextOverflow.ellipsis,
+    );
   }
 }
 
@@ -76,6 +85,46 @@ class AppointmentPriorityText extends StatelessWidget {
   }
 }
 
+class AppointmentTimeStatusText extends StatelessWidget {
+  final DateTime startTime;
+  final DateTime endTime;
+  final TextStyle? style;
+  final TextStyle? nowColor;
+  final TextStyle? laterColor;
+  final TextStyle? beforeColor;
+  const AppointmentTimeStatusText({
+    this.style,
+    this.nowColor,
+    this.laterColor,
+    this.beforeColor,
+    required this.startTime,
+    required this.endTime,
+    super.key,
+  });
+  Text _getStatus(BuildContext context) {
+    final now = DateTime.now();
+    final ongoingStyle = style?.copyWith(color: nowColor?.color ?? Colors.blue);
+    final upcomingStyle =
+        style?.copyWith(color: laterColor?.color ?? Colors.grey);
+    final endedStyle = style?.copyWith(color: beforeColor?.color ?? Colors.red);
+
+    if (now.isBefore(startTime)) {
+      return Text('Upcoming',
+          style: upcomingStyle ?? TextStyle(color: Colors.grey));
+    } else if (now.isAfter(endTime)) {
+      return Text('Ended', style: endedStyle ?? TextStyle(color: Colors.red));
+    } else {
+      return Text('Ongoing',
+          style: ongoingStyle ?? TextStyle(color: Colors.blue));
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return _getStatus(context);
+  }
+}
+
 class AppointmentSectionGap extends StatelessWidget {
   final double width;
   const AppointmentSectionGap({this.width = 24, super.key});
@@ -88,134 +137,119 @@ class AppointmentSectionGap extends StatelessWidget {
 
 class MobileAppointmentBuilder extends StatelessWidget {
   final dynamic appointment;
-  final Future<Task> taskFuture;
+  final Task task;
   const MobileAppointmentBuilder({
     required this.appointment,
-    required this.taskFuture,
+    required this.task,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<Task>(
-      future: taskFuture,
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const SizedBox(
-            child: Center(child: CircularProgressIndicator()),
-          );
-        } else if (snapshot.hasError) {
-          return SizedBox(
-            child: Text('Error: ${snapshot.error}'),
-          );
-        } else if (snapshot.hasData) {
-          final task = snapshot.data!;
-          return Container(
-            padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.surfaceContainerLow,
-              borderRadius: BorderRadius.circular(8),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black12,
-                  blurRadius: 4,
-                  offset: Offset(0, 2),
-                ),
-              ],
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // First row: Title (left), Priority, Color (right)
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child:
-                          Row(
-                            children: [
-                              AppointmentSubjectText(subject: appointment.subject, style: TextStyle(fontSize: 18)),
-                              SizedBox(width: 8),
-                              AppointmentColorIndicator(color: appointment.color),
-                            ],
-                          ),
-                    ),
-                    AppointmentPriorityText(priority: task.priority),
-
-                  ],
-                ),
-                const SizedBox(height: 0),
-                // Second row: Time
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    AppointmentTimeText(
-                      startTime: appointment.startTime,
-                      endTime: appointment.endTime,
-                      style: TextStyle(fontSize: 14),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          );
-        } else {
-          return const SizedBox(child: Text('No data available'));
-        }
-      },
+    return Container(
+      padding: const EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.surfaceContainerLow,
+        borderRadius: BorderRadius.circular(8),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black12,
+            blurRadius: 4,
+            offset: Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              AppointmentSubjectText(
+                subject: appointment.subject,
+                style: const TextStyle(fontSize: 18),
+              ),
+              const SizedBox(width: 8),
+              AppointmentColorIndicator(color: appointment.color),
+              const Spacer(),
+              AppointmentTimeStatusText(
+                startTime: appointment.startTime,
+                endTime: appointment.endTime,
+                style: const TextStyle(fontSize: 14),
+              ),
+            ],
+          ),
+          const SizedBox(height: 4),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              AppointmentTimeText(
+                startTime: appointment.startTime,
+                endTime: appointment.endTime,
+                style: const TextStyle(fontSize: 14),
+              ),
+              const Spacer(),
+              AppointmentPriorityText(priority: task.priority),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }
 
 class DesktopAppointmentBuilder extends StatelessWidget {
   final dynamic appointment;
-  final Future<Task> taskFuture;
+  final Task task;
   const DesktopAppointmentBuilder({
     required this.appointment,
-    required this.taskFuture,
+    required this.task,
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<Task>(
-      future: taskFuture,
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const SizedBox(
-            child: Center(child: CircularProgressIndicator()),
-          );
-        } else if (snapshot.hasError) {
-          return SizedBox(
-            child: Text('Error: ${snapshot.error}'),
-          );
-        } else if (snapshot.hasData) {
-          final task = snapshot.data!;
-          return SizedBox(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                AppointmentColorIndicator(color: appointment.color),
-                const AppointmentSectionGap(),
-                AppointmentTimeText(
-                  startTime: appointment.startTime,
-                  endTime: appointment.endTime,
-                ),
-                const AppointmentSectionGap(),
-                AppointmentSubjectText(subject: appointment.subject),
-                const AppointmentSectionGap(),
-                AppointmentDescriptionText(description: task.description),
-                const AppointmentSectionGap(),
-                AppointmentPriorityText(priority: task.priority),
-                const AppointmentSectionGap(),
-              ],
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          AppointmentColorIndicator(color: appointment.color),
+          const AppointmentSectionGap(),
+          SizedBox(
+            width: 135,
+            child: AppointmentTimeText(
+              startTime: appointment.startTime,
+              endTime: appointment.endTime,
             ),
-          );
-        } else {
-          return const SizedBox();
-        }
-      },
+          ),
+          const AppointmentSectionGap(),
+          Expanded(
+            flex: 1,
+            child: AppointmentSubjectText(subject: appointment.subject),
+          ),
+          const AppointmentSectionGap(),
+          Expanded(
+            flex: 3,
+            child: AppointmentDescriptionText(
+              description: task.description,
+            ),
+          ),
+          const AppointmentSectionGap(),
+          IntrinsicWidth(
+            child: AppointmentPriorityText(priority: task.priority),
+          ),
+          const AppointmentSectionGap(),
+          SizedBox(
+            width: 70,
+            child: AppointmentTimeStatusText(
+              startTime: appointment.startTime,
+              endTime: appointment.endTime,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -234,15 +268,32 @@ Widget scheduleAppointmentBuilder(
       GetHiveRecurrencyUseCase(repository, appointmentId);
   final Future<Task> taskFuture = getTaskUseCase.execute();
 
-  if (screenWidth < 600) {
-    return MobileAppointmentBuilder(
-      appointment: appointment,
-      taskFuture: taskFuture,
-    );
-  } else {
-    return DesktopAppointmentBuilder(
-      appointment: appointment,
-      taskFuture: taskFuture,
-    );
-  }
+  return FutureBuilder<Task>(
+    future: taskFuture,
+    builder: (context, snapshot) {
+      if (snapshot.connectionState == ConnectionState.waiting) {
+        return const SizedBox(
+          child: Center(child: CircularProgressIndicator()),
+        );
+      } else if (snapshot.hasError) {
+        return SizedBox(
+          child: Text('Error: \${snapshot.error}'),
+        );
+      } else if (snapshot.hasData) {
+        final task = snapshot.data!;
+        final isMobile = screenWidth < 600;
+        return isMobile
+            ? MobileAppointmentBuilder(
+                appointment: appointment,
+                task: task,
+              )
+            : DesktopAppointmentBuilder(
+                appointment: appointment,
+                task: task,
+              );
+      } else {
+        return const SizedBox(child: Text('No data available'));
+      }
+    },
+  );
 }
