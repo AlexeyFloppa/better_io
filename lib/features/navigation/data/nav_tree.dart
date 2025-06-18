@@ -47,6 +47,32 @@ final List<SectionNavData> appSections = [
           id: 'tasks-calendar',
           title: 'Calendar',
           icon: Icons.calendar_today,
+          appBarActions: [
+            IconButton(
+              icon: Icon(Icons.calendar_today),
+              onPressed: () {
+                // Navigator.of(context).push(
+                //   MaterialPageRoute(builder: (context) => ManageTaskView()),
+                // );
+              },
+            ),
+            IconButton(
+              icon: Icon(Icons.search),
+              onPressed: () {
+                // Navigator.of(context).push(
+                //   MaterialPageRoute(builder: (context) => ManageTaskView()),
+                // );
+              },
+            ),
+            IconButton(
+              icon: Icon(Icons.filter_list),
+              onPressed: () {
+                // Navigator.of(context).push(
+                //   MaterialPageRoute(builder: (context) => ManageTaskView()),
+                // );
+              },
+            ),
+          ],
           submodules: [
             SubmoduleNavData(
                 id: 'tasks-schedule-calendar',

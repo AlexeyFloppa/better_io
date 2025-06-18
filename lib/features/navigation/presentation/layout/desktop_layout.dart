@@ -19,6 +19,7 @@ class DesktopLayout extends StatelessWidget {
     return Scaffold(
       appBar: DesktopAppBar(
         title: currentModule.title,
+        appBarActions: currentModule.appBarActions,
       ),
       body: Row(
         children: [

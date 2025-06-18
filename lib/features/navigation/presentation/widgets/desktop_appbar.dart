@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 
 class DesktopAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
+  final List<Widget> appBarActions;
 
   const DesktopAppBar({
     super.key,
     required this.title,
+    required this.appBarActions,
   });
 
   @override
@@ -13,6 +15,11 @@ class DesktopAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       backgroundColor: Theme.of(context).colorScheme.surfaceContainerLow,
       title: Text(title),
+      actions: [
+        ...appBarActions,
+        // Add right padding to match left side
+        SizedBox(width: 16),
+      ],
       elevation: 0,
       surfaceTintColor: Colors.transparent,
       scrolledUnderElevation: 0,

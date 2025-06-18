@@ -5,6 +5,7 @@ class ModuleNavData {
   final String id;
   final String title;
   final IconData icon;
+  final List<Widget> appBarActions;
   final Widget screen;
   final Widget bottomButton;
   final List<SubmoduleNavData> submodules;
@@ -13,8 +14,9 @@ class ModuleNavData {
     required this.id,
     required this.title,
     required this.icon,
-    this.bottomButton = const SizedBox.shrink(),
+    this.appBarActions = const [],
     this.screen = const SizedBox.shrink(),
+    this.bottomButton = const SizedBox.shrink(),
     this.submodules = const [],
   });
 }
