@@ -8,30 +8,34 @@ class SectionNavRail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Provider.of<NavController>(context);
-    final sections = NavSelector.sections;
-    final selectedIndex =
-        sections.indexWhere((s) => s.id == controller.selectedSectionId);
+    return Consumer<NavController>(
+      builder: (context, controller, _) {
+        final sections = NavSelector.sections;
+        final selectedIndex =
+            sections.indexWhere((s) => s.id == controller.selectedSectionId);
 
-    return NavigationRail(
-      backgroundColor: Theme.of(context).colorScheme.surfaceContainerLow,
-      selectedIndex: selectedIndex,
-      onDestinationSelected: (index) {
-        final section = sections[index];
-        final firstModule = section.modules.first;
-        controller.setSection(section.id);
-        controller.setModule(firstModule.id);
-        if (firstModule.submodules.isNotEmpty) {
-          controller.setSubmodule(firstModule.submodules.first.id);
-        }
+        return NavigationRail(
+          backgroundColor: Theme.of(context).colorScheme.surfaceContainerLow,
+          selectedIndex: selectedIndex,
+          onDestinationSelected: (index) {
+            final section = sections[index];
+            final firstModule = section.modules.first;
+            final firstSubmodule = NavSelector.getFirstSubmoduleId(firstModule);
+            controller.navigateTo(
+              section.id,
+              firstModule.id,
+              firstSubmodule,
+            );
+          },
+          labelType: NavigationRailLabelType.all,
+          destinations: sections
+              .map((section) => NavigationRailDestination(
+                    icon: Icon(section.icon),
+                    label: Text(section.title),
+                  ))
+              .toList(),
+        );
       },
-      labelType: NavigationRailLabelType.all,
-      destinations: sections
-          .map((section) => NavigationRailDestination(
-                icon: Icon(section.icon),
-                label: Text(section.title),
-              ))
-          .toList(),
     );
   }
 }

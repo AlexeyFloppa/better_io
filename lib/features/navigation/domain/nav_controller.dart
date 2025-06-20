@@ -26,4 +26,14 @@ class NavController extends ChangeNotifier {
     selectedSubmoduleId = 'home';
     notifyListeners();
   }
+
+  void navigateTo(String sectionId, String moduleId, [String? submoduleId]) {
+    setSection(sectionId);
+    setModule(moduleId);
+    if (submoduleId != null) {
+      setSubmodule(submoduleId);
+    } else {
+      setSubmodule('');
+    }
+  }
 }

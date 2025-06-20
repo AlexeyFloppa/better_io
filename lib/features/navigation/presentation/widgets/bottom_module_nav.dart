@@ -8,28 +8,31 @@ class BottomModuleNav extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Provider.of<NavController>(context);
-    final modules = NavSelector.getModules(controller);
-    final selectedIndex =
-        modules.indexWhere((m) => m.id == controller.selectedModuleId);
+    return Consumer<NavController>(
+      builder: (context, controller, _) {
+        final modules = NavSelector.getModules(controller);
+        final selectedIndex =
+            modules.indexWhere((m) => m.id == controller.selectedModuleId);
 
-    return NavigationBar(
-      selectedIndex: selectedIndex,
-      onDestinationSelected: (index) {
-        final module = modules[index];
-        controller.setModule(module.id);
-        if (module.submodules.isNotEmpty) {
-          controller.setSubmodule(module.submodules.first.id);
-        } else {
-          controller.setSubmodule(''); // or some default/reset value
-        }
+        return NavigationBar(
+          selectedIndex: selectedIndex,
+          onDestinationSelected: (index) {
+            final module = modules[index];
+            final firstSubmodule = NavSelector.getFirstSubmoduleId(module);
+            controller.navigateTo(
+              controller.selectedSectionId,
+              module.id,
+              firstSubmodule,
+            );
+          },
+          destinations: modules
+              .map((m) => NavigationDestination(
+                    icon: Icon(m.icon),
+                    label: m.title,
+                  ))
+              .toList(),
+        );
       },
-      destinations: modules
-          .map((m) => NavigationDestination(
-                icon: Icon(m.icon),
-                label: m.title,
-              ))
-          .toList(),
     );
   }
 }

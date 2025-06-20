@@ -8,32 +8,37 @@ class SectionDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Provider.of<NavController>(context);
-    final sections = NavSelector.sections;
-    final selectedId = controller.selectedSectionId;
+    return Consumer<NavController>(
+      builder: (context, controller, _) {
+        final sections = NavSelector.sections;
+        final selectedId = controller.selectedSectionId;
 
-    return Drawer(
-      child: SafeArea(
-        child: ListView(
-          children: sections.map((section) {
-            final isSelected = section.id == selectedId;
-            return ListTile(
-              leading: Icon(section.icon),
-              title: Text(section.title),
-              selected: isSelected,
-              onTap: () {
-                final firstModule = section.modules.first;
-                controller.setSection(section.id);
-                controller.setModule(firstModule.id);
-                if (firstModule.submodules.isNotEmpty) {
-                  controller.setSubmodule(firstModule.submodules.first.id);
-                }
-                Navigator.of(context).pop();
-              },
-            );
-          }).toList(),
-        ),
-      ),
+        return Drawer(
+          child: SafeArea(
+            child: ListView(
+              children: sections.map((section) {
+                final isSelected = section.id == selectedId;
+                return ListTile(
+                  leading: Icon(section.icon),
+                  title: Text(section.title),
+                  selected: isSelected,
+                  onTap: () {
+                    final firstModule = section.modules.first;
+                    final firstSubmodule =
+                        NavSelector.getFirstSubmoduleId(firstModule);
+                    controller.navigateTo(
+                      section.id,
+                      firstModule.id,
+                      firstSubmodule,
+                    );
+                    Navigator.of(context).pop();
+                  },
+                );
+              }).toList(),
+            ),
+          ),
+        );
+      },
     );
   }
 }

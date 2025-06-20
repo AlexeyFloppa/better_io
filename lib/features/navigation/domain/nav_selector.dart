@@ -38,4 +38,8 @@ class NavSelector {
 
   static List<SubmoduleNavData> getSubmodules(NavController controller) =>
       getCurrentModule(controller).submodules;
+
+  static String? getFirstSubmoduleId(ModuleNavData module) {
+    return module.submodules.isNotEmpty ? module.submodules.first.id : null;
+  }
 }
