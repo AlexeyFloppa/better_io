@@ -24,16 +24,17 @@ class HiveTaskModelAdapter extends TypeAdapter<HiveTaskModel> {
       endDate: fields[4] as DateTime,
       isAllDay: fields[5] as bool,
       recurrenceRule: fields[6] as String?,
-      duration: fields[7] as String,
-      priority: fields[8] as String,
-      category: fields[9] as String,
+      recurrenceExceptionDates: (fields[7] as List?)?.cast<DateTime>(),
+      duration: fields[8] as String,
+      priority: fields[9] as String,
+      category: fields[10] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, HiveTaskModel obj) {
     writer
-      ..writeByte(10)
+      ..writeByte(11)
       ..writeByte(0)
       ..write(obj.title)
       ..writeByte(1)
@@ -49,10 +50,12 @@ class HiveTaskModelAdapter extends TypeAdapter<HiveTaskModel> {
       ..writeByte(6)
       ..write(obj.recurrenceRule)
       ..writeByte(7)
-      ..write(obj.duration)
+      ..write(obj.recurrenceExceptionDates)
       ..writeByte(8)
-      ..write(obj.priority)
+      ..write(obj.duration)
       ..writeByte(9)
+      ..write(obj.priority)
+      ..writeByte(10)
       ..write(obj.category);
   }
 

@@ -9,6 +9,7 @@ class Task {
   final DateTime endDate;
   final bool isAllDay;
   final String? recurrenceRule;
+  final List<DateTime>? recurrenceExceptionDates; // Optional recurrence exceptions
   final String duration;
   final String priority;
   final String category; // Optional category field
@@ -22,6 +23,7 @@ class Task {
     required this.endDate,
     required this.isAllDay,
     required this.recurrenceRule,
+    this.recurrenceExceptionDates,
     required this.duration,
     required this.priority,
     required this.category,
@@ -34,9 +36,10 @@ class Task {
     DateTime? endDate,
     bool? isAllDay,
     String? recurrenceRule,
+    List<DateTime>? recurrenceExceptionDates,
     String? duration,
     String? priority,
-    String? category, // Category can be changed in copy
+    String? category,  // Category can be changed in copy
   }) {
     return Task(
       id: id, // ✅ preserve original ID
@@ -47,6 +50,7 @@ class Task {
       endDate: endDate ?? this.endDate,
       isAllDay: isAllDay ?? this.isAllDay,
       recurrenceRule: recurrenceRule ?? this.recurrenceRule,
+      recurrenceExceptionDates: recurrenceExceptionDates ?? this.recurrenceExceptionDates,
       duration: duration ?? this.duration,
       priority: priority ?? this.priority,
       category: category ?? this.category, // Category is not changed in copy

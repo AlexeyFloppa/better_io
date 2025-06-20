@@ -27,12 +27,15 @@ class HiveTaskModel extends HiveObject {
   final String? recurrenceRule;
 
   @HiveField(7)
-  final String duration;
+  final List<DateTime>? recurrenceExceptionDates;
 
   @HiveField(8)
-  final String priority;
+  final String duration;
 
   @HiveField(9)
+  final String priority;
+
+  @HiveField(10)
   final String category;
 
   HiveTaskModel({
@@ -43,6 +46,7 @@ class HiveTaskModel extends HiveObject {
     required this.endDate,
     required this.isAllDay,
     this.recurrenceRule,
+    this.recurrenceExceptionDates,
     required this.duration,
     required this.priority,
     required this.category,

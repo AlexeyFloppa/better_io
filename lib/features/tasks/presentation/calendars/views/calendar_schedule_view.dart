@@ -47,6 +47,7 @@ class _CalendarScheduleViewState extends State<CalendarScheduleView> {
                         final appointment =
                             details.appointments!.first as Appointment;
                         final taskId = appointment.id.toString();
+                        final appointmentDate = appointment.startTime.add(const Duration(minutes: 60));
 
                         showModalBottomSheet(
                           context: context,
@@ -54,8 +55,11 @@ class _CalendarScheduleViewState extends State<CalendarScheduleView> {
                             onTaskRemove: () async {
                               await vm.deleteTask(taskId);
                             },
-                            onEdit: () async {
+                            onTaskEdit: () async {
                               await vm.editTask(context, taskId);
+                            },
+                            onRecurrencyRemove: () async {
+                              await vm.deleteRecurrency(taskId, appointmentDate);
                             },
                           ),
                         );

@@ -3,6 +3,8 @@ import 'package:better_io/features/tasks/data/models/hive/hive_task_model.dart';
 import 'package:better_io/features/tasks/data/repositories/hive_task_repository.dart';
 import 'package:better_io/features/tasks/domain/entities/task.dart';
 import 'package:better_io/features/tasks/domain/usecases/hive/delete_hive_task.dart';
+import 'package:better_io/features/tasks/domain/usecases/hive/delete_hive_recurrency.dart';
+
 import 'package:better_io/features/tasks/domain/usecases/hive/get_all_hive_tasks.dart';
 import 'package:better_io/features/tasks/domain/usecases/hive/get_hive_recurrency.dart';
 import 'package:better_io/features/tasks/presentation/task_management/views/manage_task_view.dart';
@@ -13,6 +15,7 @@ import 'package:syncfusion_flutter_calendar/calendar.dart';
 class CalendarsViewModel extends ChangeNotifier {
   final GetAllHiveTasksUseCase _getAllTasksUseCase;
   final DeleteHiveTaskUseCase _deleteHiveTaskUseCase;
+  final DeleteHiveRecurrencyUseCase _deleteHiveRecurrencyUseCase;
 
   List<Appointment> _appointments = [];
   List<Task> _tasks = [];
@@ -21,6 +24,7 @@ class CalendarsViewModel extends ChangeNotifier {
   CalendarsViewModel._(
     this._getAllTasksUseCase,
     this._deleteHiveTaskUseCase,
+    this._deleteHiveRecurrencyUseCase,
   ) {
     loadTasks();
   }
@@ -32,6 +36,7 @@ class CalendarsViewModel extends ChangeNotifier {
     return CalendarsViewModel._(
       GetAllHiveTasksUseCase(repository),
       DeleteHiveTaskUseCase(repository),
+      DeleteHiveRecurrencyUseCase(repository),
     );
   }
 
@@ -56,6 +61,7 @@ class CalendarsViewModel extends ChangeNotifier {
           notes: task.description,
           color: task.color,
           recurrenceRule: task.recurrenceRule,
+          recurrenceExceptionDates: task.recurrenceExceptionDates,
         );
       }).toList();
     } catch (e, stack) {
@@ -92,5 +98,10 @@ class CalendarsViewModel extends ChangeNotifier {
     } catch (e, stack) {
       log("Error editing task: $e", stackTrace: stack);
     }
+  }
+
+  Future<void> deleteRecurrency(String id, DateTime recurrenceDate) async {
+    await _deleteHiveRecurrencyUseCase.execute(id, recurrenceDate);
+    await loadTasks();
   }
 }
