@@ -16,7 +16,7 @@ class SectionNavRail extends StatelessWidget {
 
         return NavigationRail(
           backgroundColor: Theme.of(context).colorScheme.surfaceContainerLow,
-          selectedIndex: selectedIndex,
+          selectedIndex: selectedIndex >= 0 ? selectedIndex : 0,
           onDestinationSelected: (index) {
             final section = sections[index];
             final firstModule = section.modules.first;
