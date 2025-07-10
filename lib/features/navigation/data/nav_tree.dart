@@ -5,7 +5,7 @@ import 'package:better_io/features/tasks/presentation/calendars/views/calendar_m
 import 'package:better_io/features/tasks/presentation/calendars/views/calendar_schedule_view.dart';
 import 'package:better_io/features/tasks/presentation/calendars/views/calendar_weekly_view.dart';
 import 'package:better_io/features/tasks/presentation/task_management/views/manage_task_view.dart';
-import 'package:better_io/shared/widgets/fab_button.dart';
+import 'package:better_io/shared/widgets/desktop_fab_button.dart';
 import 'package:flutter/material.dart';
 
 import '../domain/models/section_nav_data.dart';
@@ -95,7 +95,7 @@ final List<SectionNavData> appSections = [
                 icon: Icons.calendar_view_month,
                 screen: CalendarMonthlyView()),
           ],
-          bottomButton: FABButton(
+          bottomButton: DesktopFABButton(
             onTap: (context) {
               Navigator.of(context).push(
                 MaterialPageRoute(builder: (context) => ManageTaskView()),

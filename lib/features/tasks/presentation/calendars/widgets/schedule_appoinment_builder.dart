@@ -1,5 +1,5 @@
 import 'package:better_io/features/tasks/data/models/hive/hive_task_model.dart';
-import 'package:better_io/features/tasks/data/repositories/hive_task_repository.dart';
+import 'package:better_io/features/tasks/data/repositories/hive/hive_task_repository.dart';
 import 'package:better_io/features/tasks/domain/entities/task.dart';
 import 'package:better_io/features/tasks/domain/usecases/hive/get_hive_recurrency.dart';
 import 'package:flutter/material.dart';

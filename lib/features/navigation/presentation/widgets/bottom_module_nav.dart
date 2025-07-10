@@ -15,7 +15,7 @@ class BottomModuleNav extends StatelessWidget {
             modules.indexWhere((m) => m.id == controller.selectedModuleId);
 
         return NavigationBar(
-          selectedIndex: selectedIndex,
+          selectedIndex: selectedIndex >= 0 ? selectedIndex : 0,
           onDestinationSelected: (index) {
             final module = modules[index];
             final firstSubmodule = NavSelector.getFirstSubmoduleId(module);

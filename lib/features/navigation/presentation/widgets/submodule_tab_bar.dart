@@ -15,39 +15,39 @@ class SubmoduleTabBar extends StatelessWidget implements PreferredSizeWidget {
         final selectedIndex =
             submodules.indexWhere((sub) => sub.id == selectedId);
 
-        return Container(
-          decoration: BoxDecoration(
-            color: Theme.of(context).appBarTheme.backgroundColor ??
-                Theme.of(context).colorScheme.surface,
-          ),
-          child: TabBar(
-            isScrollable: false,
-            indicatorColor: Theme.of(context).colorScheme.primary,
-            labelColor: Theme.of(context).colorScheme.primary,
-            unselectedLabelColor: Theme.of(context).textTheme.bodyMedium?.color,
-            labelStyle: const TextStyle(fontWeight: FontWeight.bold),
-            unselectedLabelStyle:
-                const TextStyle(fontWeight: FontWeight.normal),
-            tabs: submodules
-                .map(
-                  (sub) => Tab(
-                    icon: Icon(sub.icon, size: 20),
-                    text: sub.title,
-                  ),
-                )
-                .toList(),
-            onTap: (index) {
-              final submodule = submodules[index];
-              controller.navigateTo(
-                controller.selectedSectionId,
-                controller.selectedModuleId,
-                submodule.id,
-              );
-            },
-            controller: TabController(
-              length: submodules.length,
-              vsync: Scaffold.of(context),
-              initialIndex: selectedIndex >= 0 ? selectedIndex : 0,
+        return DefaultTabController(
+          length: submodules.length,
+          initialIndex: selectedIndex >= 0 ? selectedIndex : 0,
+          child: Container(
+            decoration: BoxDecoration(
+              color: Theme.of(context).appBarTheme.backgroundColor ??
+                  Theme.of(context).colorScheme.surface,
+            ),
+            child: TabBar(
+              isScrollable: false,
+              indicatorColor: Theme.of(context).colorScheme.primary,
+              labelColor: Theme.of(context).colorScheme.primary,
+              unselectedLabelColor:
+                  Theme.of(context).textTheme.bodyMedium?.color,
+              labelStyle: const TextStyle(fontWeight: FontWeight.bold),
+              unselectedLabelStyle:
+                  const TextStyle(fontWeight: FontWeight.normal),
+              tabs: submodules
+                  .map(
+                    (sub) => Tab(
+                      icon: Icon(sub.icon, size: 20),
+                      text: sub.title,
+                    ),
+                  )
+                  .toList(),
+              onTap: (index) {
+                final submodule = submodules[index];
+                controller.navigateTo(
+                  controller.selectedSectionId,
+                  controller.selectedModuleId,
+                  submodule.id,
+                );
+              },
             ),
           ),
         );

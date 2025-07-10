@@ -28,7 +28,7 @@ class ModuleNavRail extends StatelessWidget {
                 child: NavigationRail(
                   backgroundColor:
                       Theme.of(context).colorScheme.surfaceContainerLow,
-                  selectedIndex: selectedIndex,
+                  selectedIndex: selectedIndex >= 0 ? selectedIndex : 0,
                   labelType: NavigationRailLabelType.all,
                   onDestinationSelected: (index) {
                     final module = modules[index];

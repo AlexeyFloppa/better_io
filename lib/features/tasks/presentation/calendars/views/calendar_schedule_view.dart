@@ -1,6 +1,6 @@
 import 'package:better_io/features/tasks/data/data_sources/task_data_source.dart';
-import 'package:better_io/features/tasks/presentation/calendars/widgets/bottom_task_sheet.dart';
-import 'package:better_io/features/tasks/presentation/calendars/widgets/appoinemnt_builders/schedule_appoinment_builder.dart';
+import 'package:better_io/shared/widgets/bottom_task_sheet.dart';
+import 'package:better_io/features/tasks/presentation/calendars/widgets/schedule_appoinment_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
