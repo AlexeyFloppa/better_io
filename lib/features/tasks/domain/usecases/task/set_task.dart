@@ -1,10 +1,10 @@
 import '../../repositories/task_repository.dart';
 import '../../entities/task.dart';
 
-class SetHiveTaskUseCase {
-  final TaskRepository repository;
+class SetTaskUseCase {
+  final ITaskRepository repository;
 
-  SetHiveTaskUseCase(this.repository);
+  SetTaskUseCase(this.repository);
 
   Future<void> execute(Task task) async {
     await repository.setTask(task);

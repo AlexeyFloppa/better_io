@@ -1,9 +1,9 @@
 import '../../repositories/task_repository.dart';
 
-class DeleteHiveTaskUseCase {
-  final TaskRepository repository;
+class DeleteTaskUseCase {
+  final ITaskRepository repository;
 
-  DeleteHiveTaskUseCase(this.repository);
+  DeleteTaskUseCase(this.repository);
 
   Future<void> execute(String id) {
     return repository.deleteTask(id);

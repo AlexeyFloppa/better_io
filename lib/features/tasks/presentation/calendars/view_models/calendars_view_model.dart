@@ -1,21 +1,21 @@
 import 'dart:developer';
-import 'package:better_io/features/tasks/data/models/hive/hive_task_model.dart';
-import 'package:better_io/features/tasks/data/repositories/hive_task_repository.dart';
+import 'package:better_io/features/tasks/data/models/task_model.dart';
+import 'package:better_io/features/tasks/data/repositories/task_repository.dart';
 import 'package:better_io/features/tasks/domain/entities/task.dart';
-import 'package:better_io/features/tasks/domain/usecases/hive/delete_hive_task.dart';
-import 'package:better_io/features/tasks/domain/usecases/hive/delete_hive_recurrency.dart';
+import 'package:better_io/features/tasks/domain/usecases/task/delete_task.dart';
+import 'package:better_io/features/tasks/domain/usecases/task/delete_recurrency.dart';
 
-import 'package:better_io/features/tasks/domain/usecases/hive/get_all_hive_tasks.dart';
-import 'package:better_io/features/tasks/domain/usecases/hive/get_hive_recurrency.dart';
+import 'package:better_io/features/tasks/domain/usecases/task/get_all_tasks.dart';
+import 'package:better_io/features/tasks/domain/usecases/task/get_recurrency.dart';
 import 'package:better_io/features/tasks/presentation/task_management/views/manage_task_view.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 class CalendarsViewModel extends ChangeNotifier {
-  final GetAllHiveTasksUseCase _getAllTasksUseCase;
-  final DeleteHiveTaskUseCase _deleteHiveTaskUseCase;
-  final DeleteHiveRecurrencyUseCase _deleteHiveRecurrencyUseCase;
+  final GetAllTasksUseCase _getAllTasksUseCase;
+  final DeleteTaskUseCase _deleteTaskUseCase;
+  final DeleteRecurrencyUseCase _deleteRecurrencyUseCase;
 
   List<Appointment> _appointments = [];
   List<Task> _tasks = [];
@@ -23,20 +23,20 @@ class CalendarsViewModel extends ChangeNotifier {
 
   CalendarsViewModel._(
     this._getAllTasksUseCase,
-    this._deleteHiveTaskUseCase,
-    this._deleteHiveRecurrencyUseCase,
+    this._deleteTaskUseCase,
+    this._deleteRecurrencyUseCase,
   ) {
     loadTasks();
   }
 
   factory CalendarsViewModel() {
-    final taskBox = Hive.box<HiveTaskModel>('tasks');
-    final repository = HiveTaskRepository(taskBox);
+    final taskBox = Hive.box<TaskModel>('tasks');
+    final repository = TaskRepository(taskBox);
 
     return CalendarsViewModel._(
-      GetAllHiveTasksUseCase(repository),
-      DeleteHiveTaskUseCase(repository),
-      DeleteHiveRecurrencyUseCase(repository),
+      GetAllTasksUseCase(repository),
+      DeleteTaskUseCase(repository),
+      DeleteRecurrencyUseCase(repository),
     );
   }
 
@@ -75,16 +75,16 @@ class CalendarsViewModel extends ChangeNotifier {
   }
 
   Future<void> deleteTask(String id) async {
-    await _deleteHiveTaskUseCase.execute(id);
+    await _deleteTaskUseCase.execute(id);
     await loadTasks();
   }
 
   Future<void> editTask(BuildContext context, String id) async {
     try {
       final navigator = Navigator.of(context);
-      final taskBox = Hive.box<HiveTaskModel>('tasks');
-      final repository = HiveTaskRepository(taskBox);
-      final getTaskUseCase = GetHiveRecurrencyUseCase(repository, id);
+      final taskBox = Hive.box<TaskModel>('tasks');
+      final repository = TaskRepository(taskBox);
+      final getTaskUseCase = GetRecurrencyUseCase(repository, id);
       final Task task = await getTaskUseCase.execute();
 
       // Navigate to ManageTaskScreen in edit mode
@@ -101,7 +101,7 @@ class CalendarsViewModel extends ChangeNotifier {
   }
 
   Future<void> deleteRecurrency(String id, DateTime recurrenceDate) async {
-    await _deleteHiveRecurrencyUseCase.execute(id, recurrenceDate);
+    await _deleteRecurrencyUseCase.execute(id, recurrenceDate);
     await loadTasks();
   }
 }

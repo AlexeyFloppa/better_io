@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
 /// Hive adapter for Flutter [Color] objects.
-class ColorAdapter extends TypeAdapter<Color> {
+class HiveColorAdapter extends TypeAdapter<Color> {
   @override
   final int typeId = 1;
 
@@ -11,7 +11,6 @@ class ColorAdapter extends TypeAdapter<Color> {
 
   @override
   void write(BinaryWriter writer, Color obj) {
-    writer.writeUint32(obj.value);// ignore: deprecated_member_use
-
+    writer.writeUint32(obj.value); // ignore: deprecated_member_use
   }
 }

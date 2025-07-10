@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
-part 'hive_task_model.g.dart';
+part '../genereted/task_model.g.dart';
 
 @HiveType(typeId: 0)
-class HiveTaskModel extends HiveObject {
+class TaskModel extends HiveObject {
   @HiveField(0)
   final String title;
 
@@ -38,7 +38,7 @@ class HiveTaskModel extends HiveObject {
   @HiveField(10)
   final String category;
 
-  HiveTaskModel({
+  TaskModel({
     required this.title,
     required this.description,
     required this.color,

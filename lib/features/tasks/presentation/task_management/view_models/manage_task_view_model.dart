@@ -1,7 +1,7 @@
 // manage_task_view_model.dart
 import 'package:flutter/material.dart';
 import 'package:better_io/features/tasks/domain/entities/task.dart';
-import 'package:better_io/features/tasks/domain/usecases/hive/set_hive_task.dart';
+import 'package:better_io/features/tasks/domain/usecases/task/set_task.dart';
 
 class ManageTaskViewModel extends ChangeNotifier {
   String? editingTaskId;
@@ -47,7 +47,7 @@ class ManageTaskViewModel extends ChangeNotifier {
     'High Priority'
   ];
 
-  SetHiveTaskUseCase? _setTaskUseCase;
+  SetTaskUseCase? _setTaskUseCase;
 
   void setName(String value) {
     name = value;
@@ -146,6 +146,7 @@ class ManageTaskViewModel extends ChangeNotifier {
     durationCount = value;
     notifyListeners();
   }
+
   void setCategory(String value) {
     category = value;
     notifyListeners();
@@ -156,7 +157,7 @@ class ManageTaskViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setTaskUseCase(SetHiveTaskUseCase useCase) {
+  void setTaskUseCase(SetTaskUseCase useCase) {
     _setTaskUseCase = useCase;
   }
 
@@ -270,7 +271,7 @@ class ManageTaskViewModel extends ChangeNotifier {
 
   Future<void> saveTask(BuildContext context) async {
     if (_setTaskUseCase == null) {
-      throw Exception('SetHiveTaskUseCase not set');
+      throw Exception('SetTaskUseCase not set');
     }
     final task = buildTask(recurrenceRule: generateRecurrenceRule());
     await _setTaskUseCase!.execute(task);
@@ -300,7 +301,7 @@ class ManageTaskViewModel extends ChangeNotifier {
       isAllDay: isAllDay,
       recurrenceRule: recurrenceRule,
       duration: durationType,
-      priority: priority, 
+      priority: priority,
       category: category,
     );
   }

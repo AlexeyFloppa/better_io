@@ -5,8 +5,8 @@ import 'package:provider/provider.dart';
 import 'package:hive/hive.dart';
 
 import 'package:better_io/features/tasks/domain/entities/task.dart';
-import 'package:better_io/features/tasks/domain/usecases/hive/set_hive_task.dart';
-import 'package:better_io/features/tasks/data/repositories/hive_task_repository.dart';
+import 'package:better_io/features/tasks/domain/usecases/task/set_task.dart';
+import 'package:better_io/features/tasks/data/repositories/task_repository.dart';
 import 'package:better_io/shared/widgets/editable_list_tile.dart';
 import 'package:better_io/shared/widgets/text_input_dialog.dart';
 import 'package:better_io/shared/widgets/color_picker.dart';
@@ -22,9 +22,9 @@ class ManageTaskView extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (_) {
-        final repository = HiveTaskRepository(Hive.box('tasks'));
+        final repository = TaskRepository(Hive.box('tasks'));
         final vm = ManageTaskViewModel()
-          ..setTaskUseCase(SetHiveTaskUseCase(repository));
+          ..setTaskUseCase(SetTaskUseCase(repository));
         if (task != null) vm.loadFromTask(task!);
         return vm;
       },

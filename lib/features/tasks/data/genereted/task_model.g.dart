@@ -1,22 +1,22 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'hive_task_model.dart';
+part of '../models/task_model.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class HiveTaskModelAdapter extends TypeAdapter<HiveTaskModel> {
+class TaskModelAdapter extends TypeAdapter<TaskModel> {
   @override
   final int typeId = 0;
 
   @override
-  HiveTaskModel read(BinaryReader reader) {
+  TaskModel read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return HiveTaskModel(
+    return TaskModel(
       title: fields[0] as String,
       description: fields[1] as String,
       color: fields[2] as Color,
@@ -32,7 +32,7 @@ class HiveTaskModelAdapter extends TypeAdapter<HiveTaskModel> {
   }
 
   @override
-  void write(BinaryWriter writer, HiveTaskModel obj) {
+  void write(BinaryWriter writer, TaskModel obj) {
     writer
       ..writeByte(11)
       ..writeByte(0)
@@ -65,7 +65,7 @@ class HiveTaskModelAdapter extends TypeAdapter<HiveTaskModel> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is HiveTaskModelAdapter &&
+      other is TaskModelAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

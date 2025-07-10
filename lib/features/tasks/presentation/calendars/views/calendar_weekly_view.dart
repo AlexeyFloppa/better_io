@@ -1,4 +1,4 @@
-import 'package:better_io/features/tasks/data/data_sources/task_data_source.dart';
+import 'package:better_io/features/tasks/data/data_sources/sfcalandar_data_source.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
@@ -19,7 +19,7 @@ class CalendarWeeklyView extends StatelessWidget {
                 : SfCalendar(
                     headerHeight: 0,
                     view: CalendarView.week,
-                    dataSource: TaskDataSource(viewModel.appointments),
+                    dataSource: SfCalandarDataSource(viewModel.appointments),
                   ),
           );
         },

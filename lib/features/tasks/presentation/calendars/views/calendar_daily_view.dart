@@ -1,4 +1,4 @@
-import 'package:better_io/features/tasks/data/data_sources/task_data_source.dart';
+import 'package:better_io/features/tasks/data/data_sources/sfcalandar_data_source.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
@@ -20,7 +20,7 @@ class CalendarDailyView extends StatelessWidget {
                 : SfCalendar(
                     headerHeight: 0,
                     view: CalendarView.day,
-                    dataSource: TaskDataSource(viewModel.appointments),
+                    dataSource: SfCalandarDataSource(viewModel.appointments),
                   ),
           );
         },

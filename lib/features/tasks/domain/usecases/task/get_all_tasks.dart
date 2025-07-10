@@ -5,10 +5,10 @@ import '../../repositories/task_repository.dart';
 
 import 'dart:developer';
 
-class GetAllHiveTasksUseCase {
-  final TaskRepository repository;
+class GetAllTasksUseCase {
+  final ITaskRepository repository;
 
-  GetAllHiveTasksUseCase(this.repository);
+  GetAllTasksUseCase(this.repository);
 
   Future<List<Task>> execute() async {
     try {
@@ -18,7 +18,7 @@ class GetAllHiveTasksUseCase {
       // final cleanedTasks = RecurrenceExDateFilter.filterTasks(fixedTasks);
       // return cleanedTasks;
     } catch (e, stackTrace) {
-      log("Error in GetAllHiveTasksUseCase: $e", stackTrace: stackTrace);
+      log("Error in GetAllTasksUseCase: $e", stackTrace: stackTrace);
       rethrow;
     }
   }

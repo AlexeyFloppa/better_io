@@ -1,4 +1,4 @@
-import 'package:better_io/features/tasks/data/data_sources/task_data_source.dart';
+import 'package:better_io/features/tasks/data/data_sources/sfcalandar_data_source.dart';
 import 'package:better_io/shared/widgets/bottom_task_sheet.dart';
 import 'package:better_io/features/tasks/presentation/calendars/widgets/schedule_appoinment_builder.dart';
 import 'package:flutter/material.dart';
@@ -47,7 +47,8 @@ class _CalendarScheduleViewState extends State<CalendarScheduleView> {
                         final appointment =
                             details.appointments!.first as Appointment;
                         final taskId = appointment.id.toString();
-                        final appointmentDate = appointment.startTime.add(const Duration(minutes: 60));
+                        final appointmentDate = appointment.startTime
+                            .add(const Duration(minutes: 60));
 
                         showModalBottomSheet(
                           context: context,
@@ -59,13 +60,14 @@ class _CalendarScheduleViewState extends State<CalendarScheduleView> {
                               await vm.editTask(context, taskId);
                             },
                             onRecurrencyRemove: () async {
-                              await vm.deleteRecurrency(taskId, appointmentDate);
+                              await vm.deleteRecurrency(
+                                  taskId, appointmentDate);
                             },
                           ),
                         );
                       }
                     },
-                    dataSource: TaskDataSource(vm.appointments),
+                    dataSource: SfCalandarDataSource(vm.appointments),
                   ),
           );
         },
