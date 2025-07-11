@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'dart:developer' as developer;
 
-class DesktopFABButton extends StatelessWidget {
+class CustomFABButton extends StatelessWidget {
   final void Function(BuildContext context)? onTap;
 
-  const DesktopFABButton({super.key, this.onTap});
+  const CustomFABButton({super.key, this.onTap});
 
   @override
   Widget build(BuildContext context) {
