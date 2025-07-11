@@ -1,6 +1,8 @@
 // manage_task_view_model.dart
+import 'package:better_io/features/tasks/domain/entities/task_priority.dart';
 import 'package:flutter/material.dart';
 import 'package:better_io/features/tasks/domain/entities/task.dart';
+import 'package:better_io/features/tasks/domain/entities/task_category.dart';
 import 'package:better_io/features/tasks/domain/usecases/task/set_task.dart';
 
 class ManageTaskViewModel extends ChangeNotifier {
@@ -29,23 +31,11 @@ class ManageTaskViewModel extends ChangeNotifier {
   DateTime? durationDate;
   int? durationCount;
 
-  String category = 'General'; // Default category
-  final List<String> categoryOptions = [
-    'General',
-    'Work',
-    'Personal',
-    'Health',
-    'Finance',
-    'Education'
-  ];
+  TaskCategory category = TaskCategory.general; // Default category
+  final List<TaskCategory> categoryOptions = TaskCategory.values;
 
-  String priority = 'No Priority';
-  final List<String> priorityOptions = [
-    'No Priority',
-    'Low Priority',
-    'Normal Priority',
-    'High Priority'
-  ];
+  TaskPriority priority = TaskPriority.none;
+  final List<TaskPriority> priorityOptions = TaskPriority.values;
 
   SetTaskUseCase? _setTaskUseCase;
 
@@ -147,12 +137,12 @@ class ManageTaskViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setCategory(String value) {
+  void setCategory(TaskCategory value) {
     category = value;
     notifyListeners();
   }
 
-  void setPriority(String value) {
+  void setPriority(TaskPriority value) {
     priority = value;
     notifyListeners();
   }
@@ -170,6 +160,7 @@ class ManageTaskViewModel extends ChangeNotifier {
     endDate = task.endDate;
     isRepeating = task.recurrenceRule != null;
     isAllDay = task.isAllDay;
+    category = task.category;
     if (!task.isAllDay) {
       startTime =
           TimeOfDay(hour: task.startDate.hour, minute: task.startDate.minute);

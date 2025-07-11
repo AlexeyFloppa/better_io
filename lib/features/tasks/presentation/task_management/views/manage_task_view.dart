@@ -1,4 +1,6 @@
 // manage_task_screen.dart
+import 'package:better_io/features/tasks/domain/entities/task_category.dart';
+import 'package:better_io/features/tasks/domain/entities/task_priority.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -72,15 +74,13 @@ class _ManageTaskViewBody extends StatelessWidget {
           ),
           ListTile(
             title: const Text('Category:'),
-            subtitle: Text(vm.category),
-            onTap: () => _editDropdown(context, 'Category', vm.categoryOptions,
-                vm.category, vm.setCategory),
+            subtitle: Text(vm.category.label),
+            onTap: () => _editCategoryDropdown(context, vm),
           ),
           ListTile(
             title: const Text('Priority:'),
-            subtitle: Text(vm.priority),
-            onTap: () => _editDropdown(context, 'Priority', vm.priorityOptions,
-                vm.priority, vm.setPriority),
+            subtitle: Text(vm.priority.label),
+            onTap: () => _editPrioretyDropdown(context, vm)
           ),
           EditableListTile(
               title: 'Start Date:',
@@ -197,6 +197,46 @@ class _ManageTaskViewBody extends StatelessWidget {
         onSave: (v) => title.toLowerCase() == 'name'
             ? vm.setName(v)
             : vm.setDescription(v),
+      ),
+    );
+  }
+
+  void _editCategoryDropdown(BuildContext context, ManageTaskViewModel vm) {
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: const Text('Select Category'),
+        content: DropdownButton<TaskCategory>(
+          value: vm.category,
+          isExpanded: true,
+          items: vm.categoryOptions
+              .map((e) => DropdownMenuItem(value: e, child: Text(e.label)))
+              .toList(),
+          onChanged: (v) {
+            if (v != null) vm.setCategory(v);
+            Navigator.pop(context);
+          },
+        ),
+      ),
+    );
+  }
+
+    void _editPrioretyDropdown(BuildContext context, ManageTaskViewModel vm) {
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        title: const Text('Select Priorety'),
+        content: DropdownButton<TaskPriority>(
+          value: vm.priority,
+          isExpanded: true,
+          items: vm.priorityOptions
+              .map((e) => DropdownMenuItem(value: e, child: Text(e.label)))
+              .toList(),
+          onChanged: (v) {
+            if (v != null) vm.setPriority(v);
+            Navigator.pop(context);
+          },
+        ),
       ),
     );
   }

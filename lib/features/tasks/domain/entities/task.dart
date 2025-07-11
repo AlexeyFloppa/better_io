@@ -1,4 +1,6 @@
+import 'package:better_io/features/tasks/domain/entities/task_priority.dart';
 import 'package:flutter/material.dart';
+import 'package:better_io/features/tasks/domain/entities/task_category.dart';
 
 class Task {
   final String id;
@@ -9,10 +11,11 @@ class Task {
   final DateTime endDate;
   final bool isAllDay;
   final String? recurrenceRule;
-  final List<DateTime>? recurrenceExceptionDates; // Optional recurrence exceptions
+  final List<DateTime>?
+      recurrenceExceptionDates; // Optional recurrence exceptions
   final String duration;
-  final String priority;
-  final String category; // Optional category field
+  final TaskPriority priority;
+  final TaskCategory category; // Changed to TaskCategory enum
 
   Task({
     required this.id,
@@ -38,8 +41,8 @@ class Task {
     String? recurrenceRule,
     List<DateTime>? recurrenceExceptionDates,
     String? duration,
-    String? priority,
-    String? category,  // Category can be changed in copy
+    TaskPriority? priority,
+    TaskCategory? category, // Category can be changed in copy
   }) {
     return Task(
       id: id, // ✅ preserve original ID
@@ -50,7 +53,8 @@ class Task {
       endDate: endDate ?? this.endDate,
       isAllDay: isAllDay ?? this.isAllDay,
       recurrenceRule: recurrenceRule ?? this.recurrenceRule,
-      recurrenceExceptionDates: recurrenceExceptionDates ?? this.recurrenceExceptionDates,
+      recurrenceExceptionDates:
+          recurrenceExceptionDates ?? this.recurrenceExceptionDates,
       duration: duration ?? this.duration,
       priority: priority ?? this.priority,
       category: category ?? this.category, // Category is not changed in copy

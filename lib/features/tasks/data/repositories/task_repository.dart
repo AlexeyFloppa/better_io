@@ -1,5 +1,7 @@
+import 'package:better_io/features/tasks/domain/entities/task_priority.dart';
 import 'package:better_io/features/tasks/domain/repositories/task_repository.dart';
 import 'package:better_io/features/tasks/domain/entities/task.dart';
+import 'package:better_io/features/tasks/domain/entities/task_category.dart';
 import 'package:hive/hive.dart';
 import 'package:better_io/features/tasks/data/models/task_model.dart';
 
@@ -46,8 +48,8 @@ class TaskRepository implements ITaskRepository {
       recurrenceRule: task.recurrenceRule,
       recurrenceExceptionDates: task.recurrenceExceptionDates,
       duration: task.duration,
-      priority: task.priority,
-      category: task.category,
+      priority: TaskPriorityExtension.fromString(task.priority),
+      category: TaskCategoryExtension.fromString(task.category),
     );
   }
 
@@ -62,8 +64,8 @@ class TaskRepository implements ITaskRepository {
       recurrenceRule: task.recurrenceRule,
       recurrenceExceptionDates: task.recurrenceExceptionDates,
       duration: task.duration,
-      priority: task.priority,
-      category: task.category,
+      priority: task.priority.name,
+      category: task.category.name,
     );
   }
 }

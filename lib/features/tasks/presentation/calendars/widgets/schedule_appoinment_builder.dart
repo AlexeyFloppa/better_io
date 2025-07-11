@@ -1,6 +1,7 @@
 import 'package:better_io/features/tasks/data/models/task_model.dart';
 import 'package:better_io/features/tasks/data/repositories/task_repository.dart';
 import 'package:better_io/features/tasks/domain/entities/task.dart';
+import 'package:better_io/features/tasks/domain/entities/task_priority.dart';
 import 'package:better_io/features/tasks/domain/usecases/task/get_recurrency.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
@@ -189,7 +190,7 @@ class MobileAppointmentBuilder extends StatelessWidget {
                 style: const TextStyle(fontSize: 14),
               ),
               const Spacer(),
-              AppointmentPriorityText(priority: task.priority),
+              AppointmentPriorityText(priority: task.priority.label),
             ],
           ),
         ],
@@ -238,7 +239,7 @@ class DesktopAppointmentBuilder extends StatelessWidget {
           ),
           const AppointmentSectionGap(),
           IntrinsicWidth(
-            child: AppointmentPriorityText(priority: task.priority),
+            child: AppointmentPriorityText(priority: task.priority.label),
           ),
           const AppointmentSectionGap(),
           SizedBox(
