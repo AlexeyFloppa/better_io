@@ -36,8 +36,8 @@ class ManageTaskViewModel extends ChangeNotifier {
     basicBm.startDate = task.startDate;
     basicBm.endDate = task.endDate;
     recurrenceBm.isRepeating = task.recurrenceRule != null;
-    basicBm.isAllDay = task.isAllDay;
-    if (!task.isAllDay) {
+    basicBm.isDateTied = task.isDateTied;
+    if (!task.isDateTied) {
       basicBm.startTime =
           TimeOfDay(hour: task.startDate.hour, minute: task.startDate.minute);
       basicBm.endTime =
@@ -157,7 +157,7 @@ class ManageTaskViewModel extends ChangeNotifier {
   }
 
   Task buildTask({String? recurrenceRule}) {
-    final DateTime start = basicBm.isAllDay
+    final DateTime start = basicBm.isDateTied
         ? basicBm.startDate
         : DateTime(
             basicBm.startDate.year,
@@ -165,14 +165,14 @@ class ManageTaskViewModel extends ChangeNotifier {
             basicBm.startDate.day,
             basicBm.startTime.hour,
             basicBm.startTime.minute);
-    final DateTime end = basicBm.isAllDay
+    final DateTime end = basicBm.isDateTied
         ? basicBm.endDate
         : DateTime(basicBm.endDate.year, basicBm.endDate.month,
             basicBm.endDate.day, basicBm.endTime.hour, basicBm.endTime.minute);
 
     // Calculate proper duration
     final duration = end.difference(start);
-    final durationString = basicBm.isAllDay
+    final durationString = basicBm.isDateTied
         ? 'All Day'
         : '${duration.inHours}h ${duration.inMinutes % 60}m';
 
@@ -183,7 +183,7 @@ class ManageTaskViewModel extends ChangeNotifier {
       color: basicBm.color,
       startDate: start,
       endDate: end,
-      isAllDay: basicBm.isAllDay,
+      isDateTied: basicBm.isDateTied,
       recurrenceRule: recurrenceRule,
       duration: durationString,
       priority: basicBm.priority,

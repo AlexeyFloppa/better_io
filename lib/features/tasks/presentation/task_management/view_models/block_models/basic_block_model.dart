@@ -16,7 +16,10 @@ class BasicBlockModel extends ChangeNotifier {
   TimeOfDay startTime = TimeOfDay(hour: TimeOfDay.now().hour + 1, minute: 0);
   TimeOfDay endTime = TimeOfDay(hour: TimeOfDay.now().hour + 2, minute: 0);
 
-  bool isAllDay = false;
+  Duration? minExpectedDuration = const Duration(minutes: 1);
+  Duration? maxExpectedDuration = const Duration(minutes: 15);
+
+  bool isDateTied = false; 
 
   // --- Category & Priority ---
   TaskCategory category = TaskCategory.general; // Default category
@@ -71,7 +74,7 @@ class BasicBlockModel extends ChangeNotifier {
   }
 
   void setAllDay(bool value) {
-    isAllDay = value;
+    isDateTied = value;
     notifyListeners();
   }
 

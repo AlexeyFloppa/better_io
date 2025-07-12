@@ -22,7 +22,7 @@ class TaskModelAdapter extends TypeAdapter<TaskModel> {
       color: fields[2] as Color,
       startDate: fields[3] as DateTime,
       endDate: fields[4] as DateTime,
-      isAllDay: fields[5] as bool,
+      isDateTied: fields[5] as bool,
       recurrenceRule: fields[6] as String?,
       recurrenceExceptionDates: (fields[7] as List?)?.cast<DateTime>(),
       duration: fields[8] as String,
@@ -46,7 +46,7 @@ class TaskModelAdapter extends TypeAdapter<TaskModel> {
       ..writeByte(4)
       ..write(obj.endDate)
       ..writeByte(5)
-      ..write(obj.isAllDay)
+      ..write(obj.isDateTied)
       ..writeByte(6)
       ..write(obj.recurrenceRule)
       ..writeByte(7)

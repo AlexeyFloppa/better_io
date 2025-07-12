@@ -56,7 +56,7 @@ class CalendarsViewModel extends ChangeNotifier {
           id: task.id,
           startTime: task.startDate,
           endTime: task.endDate,
-          isAllDay: task.isAllDay,
+          isAllDay: task.isDateTied,
           subject: task.title,
           notes: task.description,
           color: task.color,

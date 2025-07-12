@@ -21,7 +21,7 @@ class TaskModel extends HiveObject {
   final DateTime endDate;
 
   @HiveField(5)
-  final bool isAllDay;
+  final bool isDateTied;
 
   @HiveField(6)
   final String? recurrenceRule;
@@ -44,7 +44,7 @@ class TaskModel extends HiveObject {
     required this.color,
     required this.startDate,
     required this.endDate,
-    required this.isAllDay,
+    required this.isDateTied,
     this.recurrenceRule,
     this.recurrenceExceptionDates,
     required this.duration,

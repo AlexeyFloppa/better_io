@@ -9,7 +9,7 @@ class Task {
   final Color color;
   final DateTime startDate;
   final DateTime endDate;
-  final bool isAllDay;
+  final bool isDateTied;
   final String? recurrenceRule;
   final List<DateTime>?
       recurrenceExceptionDates; // Optional recurrence exceptions
@@ -24,7 +24,7 @@ class Task {
     required this.color,
     required this.startDate,
     required this.endDate,
-    required this.isAllDay,
+    required this.isDateTied,
     this.recurrenceRule, // Remove 'required' since it's nullable
     this.recurrenceExceptionDates,
     required this.duration,
@@ -37,7 +37,7 @@ class Task {
     Color? color,
     DateTime? startDate,
     DateTime? endDate,
-    bool? isAllDay,
+    bool? isDateTied,
     String? recurrenceRule,
     List<DateTime>? recurrenceExceptionDates,
     String? duration,
@@ -51,7 +51,7 @@ class Task {
       color: color ?? this.color,
       startDate: startDate ?? this.startDate,
       endDate: endDate ?? this.endDate,
-      isAllDay: isAllDay ?? this.isAllDay,
+      isDateTied: isDateTied ?? this.isDateTied,
       recurrenceRule: recurrenceRule ?? this.recurrenceRule,
       recurrenceExceptionDates:
           recurrenceExceptionDates ?? this.recurrenceExceptionDates,
