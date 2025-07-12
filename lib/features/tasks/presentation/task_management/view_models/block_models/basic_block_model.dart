@@ -81,18 +81,8 @@ class BasicBlockModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setCategoryFromString(String value) {
-    category = TaskCategoryExtension.fromString(value);
-    notifyListeners();
-  }
-
   void setPriority(TaskPriority value) {
     priority = value;
-    notifyListeners();
-  }
-
-  void setPriorityFromString(String value) {
-    priority = TaskPriorityExtension.fromString(value);
     notifyListeners();
   }
 }

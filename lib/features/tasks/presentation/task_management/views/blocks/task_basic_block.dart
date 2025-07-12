@@ -1,80 +1,55 @@
 import 'package:better_io/features/tasks/presentation/task_management/view_models/block_models/basic_block_model.dart';
-import 'package:better_io/shared/widgets/tiles/date_picker_tile.dart';
-import 'package:better_io/shared/widgets/dialogs/option_picker_dialog.dart';
-import 'package:flutter/material.dart';
-import 'package:better_io/shared/widgets/dialogs/color_picker_dialog.dart';
-import 'package:better_io/shared/widgets/dialogs/text_input_dialog.dart';
+import 'package:better_io/features/tasks/presentation/task_management/widgets/tiles/color_picker_tile.dart';
+import 'package:better_io/features/tasks/presentation/task_management/widgets/tiles/date_picker_tile.dart';
+import 'package:better_io/features/tasks/presentation/task_management/widgets/tiles/input_field_tile.dart';
+import 'package:better_io/features/tasks/presentation/task_management/widgets/tiles/time_picker_tile.dart';
+import 'package:better_io/features/tasks/presentation/task_management/widgets/tiles/option_picker_tile.dart';
 import 'package:better_io/features/tasks/domain/entities/task_category.dart';
 import 'package:better_io/features/tasks/domain/entities/task_priority.dart';
+import 'package:flutter/material.dart';
 
 class TaskBasicBlock extends StatelessWidget {
   final BasicBlockModel bm;
-  final Color? disabledColor;
-  const TaskBasicBlock({super.key, required this.bm, this.disabledColor});
+  const TaskBasicBlock({super.key, required this.bm});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        ListTile(
-            title: Text('Name:'),
-            subtitle: Text(bm.name),
-            onTap: () => _editTextField(context, bm, 'name', bm.name)),
-        ListTile(
+        InputFieldTile(
+            title: Text('Name:'), value: bm.name, onChanged: bm.setName),
+        InputFieldTile(
             title: Text('Description:'),
-            subtitle: Text(bm.description),
-            onTap: () =>
-                _editTextField(context, bm, 'description', bm.description)),
-        ListTile(
+            value: bm.description,
+            onChanged: bm.setDescription),
+        ColorPickerTile(
           title: Text('Color:'),
-          subtitle: Text(
-              '#${bm.color.a.toInt().toRadixString(16).padLeft(2, '0').toUpperCase()}'
-              '${bm.color.r.toInt().toRadixString(16).padLeft(2, '0').toUpperCase()}'
-              '${bm.color.g.toInt().toRadixString(16).padLeft(2, '0').toUpperCase()}'
-              '${bm.color.b.toInt().toRadixString(16).padLeft(2, '0').toUpperCase()}'),
-          trailing: CircleAvatar(backgroundColor: bm.color, radius: 15),
-          onTap: () => ColorPickerDialog.show(
-              context: context,
-              initialColor: bm.color,
-              onColorPicked: bm.setColor),
+          color: bm.color,
+          onColorChanged: bm.setColor,
         ),
-        ListTile(
+        OptionPickerTile<TaskCategory>(
           title: Text('Category:'),
-          subtitle: Text(bm.category.label),
-          onTap: () => OptionPickerDialog.show(
-            context,
-            title: 'Category',
-            options: bm.categoryOptions.map((e) => e.label).toList(),
-            selected: bm.category.label,
-            onSelect: (selected) {
-              final category =
-                  bm.categoryOptions.firstWhere((e) => e.label == selected);
-              bm.setCategory(category);
-            },
-          ),
+          selectedValue: bm.category,
+          options: bm.categoryOptions,
+          dialogTitle: 'Category',
+          getLabel: (category) => category.label,
+          onSelect: bm.setCategory,
         ),
-        ListTile(
-          title: const Text('Priority:'),
-          subtitle: Text(bm.priority.label),
-          onTap: () => OptionPickerDialog.show(
-            context,
-            title: 'Priority',
-            options: bm.priorityOptions.map((e) => e.label).toList(),
-            selected: bm.priority.label,
-            onSelect: (selected) {
-              final priority =
-                  bm.priorityOptions.firstWhere((e) => e.label == selected);
-              bm.setPriority(priority);
-            },
-          ),
+        OptionPickerTile<TaskPriority>(
+          title: Text('Priority:'),
+          selectedValue: bm.priority,
+          options: bm.priorityOptions,
+          dialogTitle: 'Priority',
+          getLabel: (priority) => priority.label,
+          onSelect: bm.setPriority,
         ),
         DatePickerTile(
-          title: 'Start Date:',
+          title: const Text('Start Date:'),
           date: bm.startDate,
           onDateSelected: bm.setStartDate,
         ),
         DatePickerTile(
-          title: 'End Date:',
+          title: const Text('End Date:'),
           date: bm.endDate,
           onDateSelected: bm.setEndDate,
         ),
@@ -84,44 +59,18 @@ class TaskBasicBlock extends StatelessWidget {
             value: bm.isAllDay,
             onChanged: bm.setAllDay),
         if (!bm.isAllDay) ...[
-          ListTile(
+          TimePickerTile(
             title: const Text('Start Time:'),
-            subtitle: Text(bm.startTime.format(context)),
-            onTap: () => _selectTime(context, bm.setStartTime, bm.startTime),
+            time: bm.startTime,
+            onTimeSelected: bm.setStartTime,
           ),
-          ListTile(
+          TimePickerTile(
             title: const Text('End Time:'),
-            subtitle: Text(bm.endTime.format(context)),
-            onTap: () => _selectTime(context, bm.setEndTime, bm.endTime),
+            time: bm.endTime,
+            onTimeSelected: bm.setEndTime,
           ),
         ]
       ],
     );
-  }
-
-  void _editTextField(
-      BuildContext context, BasicBlockModel bm, String title, String value) {
-    showDialog(
-      context: context,
-      builder: (_) => TextInputDialog(
-        title: 'Edit $title',
-        initialValue: value,
-        onSave: (v) => title.toLowerCase() == 'name'
-            ? bm.setName(v)
-            : bm.setDescription(v),
-      ),
-    );
-  }
-
-  Future<void> _selectTime(BuildContext context,
-      ValueChanged<TimeOfDay> onSelect, TimeOfDay initial) async {
-    final picked = await showTimePicker(
-      context: context,
-      initialTime: initial,
-      builder: (context, child) => MediaQuery(
-          data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
-          child: child!),
-    );
-    if (picked != null) onSelect(picked);
   }
 }

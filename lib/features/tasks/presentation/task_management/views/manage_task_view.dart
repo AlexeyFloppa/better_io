@@ -1,16 +1,17 @@
+import 'package:flutter/material.dart';
+
+import 'package:hive/hive.dart';
+import 'package:provider/provider.dart';
+
+import 'package:better_io/features/tasks/data/repositories/task_repository.dart';
+import 'package:better_io/features/tasks/domain/entities/task.dart';
+import 'package:better_io/features/tasks/domain/usecases/task/set_task.dart';
 // manage_task_screen.dart
 import 'package:better_io/features/tasks/presentation/task_management/view_models/block_models/basic_block_model.dart';
 import 'package:better_io/features/tasks/presentation/task_management/view_models/block_models/recurrence_block_model.dart';
-import 'package:better_io/features/tasks/presentation/task_management/views/blocks/task_repeat_block.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:hive/hive.dart';
-
-import 'package:better_io/features/tasks/domain/entities/task.dart';
-import 'package:better_io/features/tasks/domain/usecases/task/set_task.dart';
-import 'package:better_io/features/tasks/data/repositories/task_repository.dart';
 import 'package:better_io/features/tasks/presentation/task_management/view_models/manage_task_view_model.dart';
 import 'package:better_io/features/tasks/presentation/task_management/views/blocks/task_basic_block.dart';
+import 'package:better_io/features/tasks/presentation/task_management/views/blocks/task_repeat_block.dart';
 
 class ManageTaskView extends StatelessWidget {
   final Task? task;
@@ -40,10 +41,6 @@ class _ManageTaskViewBody extends StatelessWidget {
     final vm = context.watch<ManageTaskViewModel>();
     final basicBm = vm.basicBm;
     final recurrenceBm = vm.recurrenceBm;
-    final disabledColor = Theme.of(context)
-        .colorScheme
-        .onSurface
-        .withAlpha((Theme.of(context).colorScheme.onSurface.a * 0.38).round());
 
     return Scaffold(
       appBar: AppBar(title: const Text('Manage Task')),
@@ -52,15 +49,13 @@ class _ManageTaskViewBody extends StatelessWidget {
           ChangeNotifierProvider.value(
             value: basicBm,
             child: Consumer<BasicBlockModel>(
-              builder: (context, bm, _) =>
-                  TaskBasicBlock(bm: bm, disabledColor: disabledColor),
+              builder: (context, bm, _) => TaskBasicBlock(bm: bm),
             ),
           ),
           ChangeNotifierProvider.value(
             value: recurrenceBm,
             child: Consumer<RecurrenceBlockModel>(
-              builder: (context, bm, _) =>
-                  TaskRepeatBlock(bm: bm, disabledColor: disabledColor),
+              builder: (context, bm, _) => TaskRepeatBlock(bm: bm),
             ),
           ),
           const SizedBox(height: 80),

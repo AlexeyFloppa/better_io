@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class DatePickerTile extends StatelessWidget {
-  final String title;
+  final Text title;
   final DateTime? date;
   final ValueChanged<DateTime> onDateSelected;
 
@@ -16,7 +16,7 @@ class DatePickerTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      title: Text(title),
+      title: title,
       subtitle: Text(
         date != null ? DateFormat.yMMMd().format(date!) : 'Select a date',
       ),
