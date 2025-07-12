@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 class BottomTaskSheet extends StatelessWidget {
   final VoidCallback onTaskEdit;
   final VoidCallback onTaskRemove;
-  final VoidCallback onRecurrencyRemove;
+  final VoidCallback onRecurrenceRemove;
 
   const BottomTaskSheet({
     super.key,
     required this.onTaskEdit,
     required this.onTaskRemove,
-    required this.onRecurrencyRemove,
+    required this.onRecurrenceRemove,
   });
 
   @override
@@ -36,10 +36,10 @@ class BottomTaskSheet extends StatelessWidget {
           ),
           ListTile(
             leading: const Icon(Icons.delete_sweep),
-            title: const Text('Remove Recurrency'),
+            title: const Text('Remove Recurrence'),
             onTap: () {
               Navigator.pop(context);
-              onRecurrencyRemove();
+              onRecurrenceRemove();
             },
           ),
         ],

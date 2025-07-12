@@ -20,7 +20,7 @@ class CalendarDailyView extends StatelessWidget {
                 : SfCalendar(
                     headerHeight: 0,
                     view: CalendarView.day,
-                    dataSource: SfCalandarDataSource(viewModel.appointments),
+                    dataSource: SfCalendarDataSource(viewModel.appointments),
                   ),
           );
         },

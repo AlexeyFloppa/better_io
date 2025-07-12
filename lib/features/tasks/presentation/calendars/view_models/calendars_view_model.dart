@@ -6,7 +6,7 @@ import 'package:better_io/features/tasks/domain/usecases/task/delete_task.dart';
 import 'package:better_io/features/tasks/domain/usecases/task/delete_recurrency.dart';
 
 import 'package:better_io/features/tasks/domain/usecases/task/get_all_tasks.dart';
-import 'package:better_io/features/tasks/domain/usecases/task/get_recurrency.dart';
+import 'package:better_io/features/tasks/domain/usecases/task/get_recurrence.dart';
 import 'package:better_io/features/tasks/presentation/task_management/views/manage_task_view.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -15,7 +15,7 @@ import 'package:syncfusion_flutter_calendar/calendar.dart';
 class CalendarsViewModel extends ChangeNotifier {
   final GetAllTasksUseCase _getAllTasksUseCase;
   final DeleteTaskUseCase _deleteTaskUseCase;
-  final DeleteRecurrencyUseCase _deleteRecurrencyUseCase;
+  final DeleteRecurrenceUseCase _deleteRecurrenceUseCase;
 
   List<Appointment> _appointments = [];
   List<Task> _tasks = [];
@@ -24,7 +24,7 @@ class CalendarsViewModel extends ChangeNotifier {
   CalendarsViewModel._(
     this._getAllTasksUseCase,
     this._deleteTaskUseCase,
-    this._deleteRecurrencyUseCase,
+    this._deleteRecurrenceUseCase,
   ) {
     loadTasks();
   }
@@ -36,7 +36,7 @@ class CalendarsViewModel extends ChangeNotifier {
     return CalendarsViewModel._(
       GetAllTasksUseCase(repository),
       DeleteTaskUseCase(repository),
-      DeleteRecurrencyUseCase(repository),
+      DeleteRecurrenceUseCase(repository),
     );
   }
 
@@ -84,8 +84,8 @@ class CalendarsViewModel extends ChangeNotifier {
       final navigator = Navigator.of(context);
       final taskBox = Hive.box<TaskModel>('tasks');
       final repository = TaskRepository(taskBox);
-      final getTaskUseCase = GetRecurrencyUseCase(repository, id);
-      final Task task = await getTaskUseCase.execute();
+      final getRecurrenceUseCase = GetRecurrenceUseCase(repository, id);
+      final Task task = await getRecurrenceUseCase.execute();
 
       // Navigate to ManageTaskScreen in edit mode
       await navigator.push(
@@ -100,8 +100,8 @@ class CalendarsViewModel extends ChangeNotifier {
     }
   }
 
-  Future<void> deleteRecurrency(String id, DateTime recurrenceDate) async {
-    await _deleteRecurrencyUseCase.execute(id, recurrenceDate);
+  Future<void> deleteRecurrence(String id, DateTime recurrenceDate) async {
+    await _deleteRecurrenceUseCase.execute(id, recurrenceDate);
     await loadTasks();
   }
 }

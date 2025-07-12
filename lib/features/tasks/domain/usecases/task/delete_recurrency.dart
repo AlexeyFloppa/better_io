@@ -1,10 +1,10 @@
 import 'package:better_io/features/tasks/domain/entities/task.dart';
 import '../../repositories/task_repository.dart';
 
-class DeleteRecurrencyUseCase {
+class DeleteRecurrenceUseCase {
   final ITaskRepository repository;
 
-  DeleteRecurrencyUseCase(this.repository);
+  DeleteRecurrenceUseCase(this.repository);
 
   Future<void> execute(String id, DateTime recurrenceDate) async {
     final Task task = await repository.getTask(id);

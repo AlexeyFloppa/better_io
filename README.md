@@ -1,10 +1,9 @@
-
 <p align="center">
   <img src="docs/assets/icon.png" width="300px" alt="Better.io Logo"/>
 </p>
 
 <h1 align="center" style="margin-bottom: 0;"> Better.io</h1>
-<p align="center" style="margin-top: 4px;"><i>🌱 Productivity and self-growth in one clean, be better 🌱</i></p>
+<p align="center" style="margin-top: 4px;"><i>🌱 Productivity and self-growth in one clean app - be better every day🌱</i></p>
 
 
 ---
@@ -51,8 +50,9 @@ git clone https://github.com/AlexeyFloppa/better_io.git
 cd better.io
 flutter pub get
 flutter run
+```
 
 ## 📜 License
 
 This project is licensed under the [GNU Affero General Public License v3.0](./LICENSE).  
-Youre free to use, modify, and distribute it, but any public modifications must also be open-sourced.
+You're free to use, modify, and distribute it, but any public modifications must also be open-sourced.

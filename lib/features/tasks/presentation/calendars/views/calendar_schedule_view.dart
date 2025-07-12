@@ -1,6 +1,6 @@
 import 'package:better_io/features/tasks/data/data_sources/sfcalandar_data_source.dart';
 import 'package:better_io/features/tasks/presentation/calendars/widgets/bottom_task_sheet.dart';
-import 'package:better_io/features/tasks/presentation/calendars/widgets/schedule_appoinment_builder.dart';
+import 'package:better_io/features/tasks/presentation/calendars/widgets/schedule_appointment_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
@@ -59,15 +59,15 @@ class _CalendarScheduleViewState extends State<CalendarScheduleView> {
                             onTaskEdit: () async {
                               await vm.editTask(context, taskId);
                             },
-                            onRecurrencyRemove: () async {
-                              await vm.deleteRecurrency(
+                            onRecurrenceRemove: () async {
+                              await vm.deleteRecurrence(
                                   taskId, appointmentDate);
                             },
                           ),
                         );
                       }
                     },
-                    dataSource: SfCalandarDataSource(vm.appointments),
+                    dataSource: SfCalendarDataSource(vm.appointments),
                   ),
           );
         },

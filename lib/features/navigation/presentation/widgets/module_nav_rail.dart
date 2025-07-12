@@ -48,7 +48,7 @@ class ModuleNavRail extends StatelessWidget {
                       .toList(),
                 ),
               ),
-              // TODO: Rewrite it becasue if we have no button, we have shirink sized box, with padding, which is not good
+              // TODO: Rewrite it because if we have no button, we have shrink sized box, with padding, which is not good
               if (currentModule?.bottomButton != null)
                 Padding(
                   padding: const EdgeInsets.all(16.0),

@@ -26,7 +26,7 @@ class CalendarMonthlyView extends StatelessWidget {
                       // appointmentDisplayMode:
                       //     MonthAppointmentDisplayMode.appointment,
                     ),
-                    dataSource: SfCalandarDataSource(viewModel.appointments),
+                    dataSource: SfCalendarDataSource(viewModel.appointments),
                   ),
           );
         },

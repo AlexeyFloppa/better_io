@@ -19,7 +19,7 @@ class CalendarWeeklyView extends StatelessWidget {
                 : SfCalendar(
                     headerHeight: 0,
                     view: CalendarView.week,
-                    dataSource: SfCalandarDataSource(viewModel.appointments),
+                    dataSource: SfCalendarDataSource(viewModel.appointments),
                   ),
           );
         },
