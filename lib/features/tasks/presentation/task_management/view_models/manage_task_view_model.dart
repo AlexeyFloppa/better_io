@@ -1,172 +1,50 @@
 // manage_task_view_model.dart
-import 'package:better_io/features/tasks/domain/entities/task_priority.dart';
+import 'package:better_io/features/tasks/presentation/task_management/view_models/block_models/basic_block_model.dart';
+import 'package:better_io/features/tasks/presentation/task_management/view_models/block_models/recurrence_block_model.dart';
 import 'package:flutter/material.dart';
 import 'package:better_io/features/tasks/domain/entities/task.dart';
-import 'package:better_io/features/tasks/domain/entities/task_category.dart';
 import 'package:better_io/features/tasks/domain/usecases/task/set_task.dart';
 
+// FeedbackEntry model for multi-feedback support
+class FeedbackEntry {
+  String? type;
+  String? label;
+  String? instruction;
+  FeedbackEntry({this.type, this.label, this.instruction});
+}
+
 class ManageTaskViewModel extends ChangeNotifier {
+  BasicBlockModel basicBm = BasicBlockModel();
+  RecurrenceBlockModel recurrenceBm = RecurrenceBlockModel();
+
+  // --- Task Identity & Basic Fields ---
   String? editingTaskId;
-
-  String name = 'Empty';
-  String description = 'Empty';
-  Color color = Colors.primaries[
-      DateTime.now().millisecondsSinceEpoch % Colors.primaries.length];
-
-  DateTime startDate = DateTime.now().subtract(const Duration(minutes: 1));
-  DateTime endDate = DateTime.now().copyWith(hour: 23, minute: 59);
-  TimeOfDay startTime = TimeOfDay(hour: TimeOfDay.now().hour + 1, minute: 0);
-  TimeOfDay endTime = TimeOfDay(hour: TimeOfDay.now().hour + 2, minute: 0);
-  bool isAllDay = false;
-
-  bool isRepeating = false;
-  String repeatType = 'Daily';
-  final List<String> repeatOptions = ['Daily', 'Weekly', 'Monthly', 'Yearly'];
-  int repeatInterval = 1;
-  List<int> weeklyRepeatDays = [];
-  List<int> monthlyRepeatDays = [];
-  List<int> yearlyRepeatDays = [];
-
-  String durationType = 'Forever';
-  DateTime? durationDate;
-  int? durationCount;
-
-  TaskCategory category = TaskCategory.general; // Default category
-  final List<TaskCategory> categoryOptions = TaskCategory.values;
-
-  TaskPriority priority = TaskPriority.none;
-  final List<TaskPriority> priorityOptions = TaskPriority.values;
-
+  // --- Use Case ---
   SetTaskUseCase? _setTaskUseCase;
 
-  void setName(String value) {
-    name = value;
-    notifyListeners();
-  }
-
-  void setDescription(String value) {
-    description = value;
-    notifyListeners();
-  }
-
-  void setColor(Color value) {
-    color = value;
-    notifyListeners();
-  }
-
-  void setStartDate(DateTime value) {
-    startDate = value;
-    notifyListeners();
-  }
-
-  void setEndDate(DateTime value) {
-    endDate = value;
-    notifyListeners();
-  }
-
-  void setStartTime(TimeOfDay value) {
-    startTime = value;
-    final startDT = DateTime(startDate.year, startDate.month, startDate.day,
-        startTime.hour, startTime.minute);
-    final endDT = DateTime(
-        endDate.year, endDate.month, endDate.day, endTime.hour, endTime.minute);
-    if (!startDT.isBefore(endDT)) {
-      final adjusted = startDT.add(const Duration(hours: 1));
-      endTime = TimeOfDay(hour: adjusted.hour, minute: adjusted.minute);
-      endDate = adjusted;
-    }
-    notifyListeners();
-  }
-
-  void setEndTime(TimeOfDay value) {
-    endTime = value;
-    notifyListeners();
-  }
-
-  void setAllDay(bool value) {
-    isAllDay = value;
-    notifyListeners();
-  }
-
-  void setRepeating(bool value) {
-    isRepeating = value;
-    notifyListeners();
-  }
-
-  void setRepeatType(String value) {
-    repeatType = value;
-    notifyListeners();
-  }
-
-  void setRepeatInterval(int value) {
-    repeatInterval = value;
-    notifyListeners();
-  }
-
-  void setWeeklyRepeatDays(List<int> days) {
-    weeklyRepeatDays = days;
-    notifyListeners();
-  }
-
-  void setMonthlyRepeatDays(List<int> days) {
-    monthlyRepeatDays = days;
-    notifyListeners();
-  }
-
-  void setYearlyRepeatDays(List<int> days) {
-    yearlyRepeatDays = days;
-    notifyListeners();
-  }
-
-  void setDurationType(String value) {
-    durationType = value;
-    if (value == 'Forever') {
-      durationDate = null;
-      durationCount = null;
-    }
-    notifyListeners();
-  }
-
-  void setDurationDate(DateTime? value) {
-    durationDate = value;
-    notifyListeners();
-  }
-
-  void setDurationCount(int? value) {
-    durationCount = value;
-    notifyListeners();
-  }
-
-  void setCategory(TaskCategory value) {
-    category = value;
-    notifyListeners();
-  }
-
-  void setPriority(TaskPriority value) {
-    priority = value;
-    notifyListeners();
-  }
-
+  // --- Set Use Case ---
   void setTaskUseCase(SetTaskUseCase useCase) {
     _setTaskUseCase = useCase;
   }
 
+  // --- Task Loading & Saving ---
   void loadFromTask(Task task) {
     editingTaskId = task.id;
-    name = task.title;
-    description = task.description;
-    color = task.color;
-    startDate = task.startDate;
-    endDate = task.endDate;
-    isRepeating = task.recurrenceRule != null;
-    isAllDay = task.isAllDay;
-    category = task.category;
+    basicBm.name = task.title;
+    basicBm.description = task.description;
+    basicBm.color = task.color;
+    basicBm.startDate = task.startDate;
+    basicBm.endDate = task.endDate;
+    recurrenceBm.isRepeating = task.recurrenceRule != null;
+    basicBm.isAllDay = task.isAllDay;
     if (!task.isAllDay) {
-      startTime =
+      basicBm.startTime =
           TimeOfDay(hour: task.startDate.hour, minute: task.startDate.minute);
-      endTime = TimeOfDay(hour: task.endDate.hour, minute: task.endDate.minute);
+      basicBm.endTime =
+          TimeOfDay(hour: task.endDate.hour, minute: task.endDate.minute);
     }
-    priority = task.priority;
+    basicBm.priority = task.priority;
+    basicBm.category = task.category;
 
     // Parse recurrence rule if present
     if (task.recurrenceRule != null) {
@@ -182,16 +60,18 @@ class ManageTaskViewModel extends ChangeNotifier {
       // FREQ
       if (parts.containsKey('FREQ')) {
         final freq = parts['FREQ']!;
-        if (repeatOptions.contains(freq[0] + freq.substring(1).toLowerCase())) {
-          repeatType = freq[0] + freq.substring(1).toLowerCase();
+        if (recurrenceBm.repeatOptions
+            .contains(freq[0] + freq.substring(1).toLowerCase())) {
+          recurrenceBm.repeatType = freq[0] + freq.substring(1).toLowerCase();
         } else {
-          repeatType = repeatOptions.firstWhere((e) => e.toUpperCase() == freq,
+          recurrenceBm.repeatType = recurrenceBm.repeatOptions.firstWhere(
+              (e) => e.toUpperCase() == freq,
               orElse: () => 'Daily');
         }
       }
       // INTERVAL
       if (parts.containsKey('INTERVAL')) {
-        repeatInterval = int.tryParse(parts['INTERVAL']!) ?? 1;
+        recurrenceBm.repeatInterval = int.tryParse(parts['INTERVAL']!) ?? 1;
       }
       // BYDAY (Weekly)
       if (parts.containsKey('BYDAY')) {
@@ -204,57 +84,57 @@ class ManageTaskViewModel extends ChangeNotifier {
           'SA': 6,
           'SU': 7
         };
-        weeklyRepeatDays =
+        recurrenceBm.weeklyRepeatDays =
             parts['BYDAY']!.split(',').map((d) => map[d] ?? 1).toList();
       } else {
-        weeklyRepeatDays = [];
+        recurrenceBm.weeklyRepeatDays = [];
       }
       // BYMONTHDAY (Monthly)
       if (parts.containsKey('BYMONTHDAY')) {
-        monthlyRepeatDays = parts['BYMONTHDAY']!
+        recurrenceBm.monthlyRepeatDays = parts['BYMONTHDAY']!
             .split(',')
             .map((d) => int.tryParse(d) ?? 1)
             .toList();
       } else {
-        monthlyRepeatDays = [];
+        recurrenceBm.monthlyRepeatDays = [];
       }
       // BYYEARDAY (Yearly)
       if (parts.containsKey('BYYEARDAY')) {
-        yearlyRepeatDays = parts['BYYEARDAY']!
+        recurrenceBm.yearlyRepeatDays = parts['BYYEARDAY']!
             .split(',')
             .map((d) => int.tryParse(d) ?? 1)
             .toList();
       } else {
-        yearlyRepeatDays = [];
+        recurrenceBm.yearlyRepeatDays = [];
       }
       // UNTIL (Duration Type: Until)
       if (parts.containsKey('UNTIL')) {
-        durationType = 'Until';
+        recurrenceBm.durationType = 'Until';
         try {
-          durationDate = DateTime.parse(parts['UNTIL']!);
+          recurrenceBm.durationDate = DateTime.parse(parts['UNTIL']!);
         } catch (_) {
-          durationDate = null;
+          recurrenceBm.durationDate = null;
         }
-        durationCount = null;
+        recurrenceBm.durationCount = null;
       } else if (parts.containsKey('COUNT')) {
-        durationType = 'Count';
-        durationCount = int.tryParse(parts['COUNT']!) ?? 1;
-        durationDate = null;
+        recurrenceBm.durationType = 'Count';
+        recurrenceBm.durationCount = int.tryParse(parts['COUNT']!) ?? 1;
+        recurrenceBm.durationDate = null;
       } else {
-        durationType = 'Forever';
-        durationDate = null;
-        durationCount = null;
+        recurrenceBm.durationType = 'Forever';
+        recurrenceBm.durationDate = null;
+        recurrenceBm.durationCount = null;
       }
     } else {
       // Reset recurrence fields if not repeating
-      repeatType = 'Daily';
-      repeatInterval = 1;
-      weeklyRepeatDays = [];
-      monthlyRepeatDays = [];
-      yearlyRepeatDays = [];
-      durationType = 'Forever';
-      durationDate = null;
-      durationCount = null;
+      recurrenceBm.repeatType = 'Daily';
+      recurrenceBm.repeatInterval = 1;
+      recurrenceBm.weeklyRepeatDays = [];
+      recurrenceBm.monthlyRepeatDays = [];
+      recurrenceBm.yearlyRepeatDays = [];
+      recurrenceBm.durationType = 'Forever';
+      recurrenceBm.durationDate = null;
+      recurrenceBm.durationCount = null;
     }
 
     notifyListeners();
@@ -264,7 +144,11 @@ class ManageTaskViewModel extends ChangeNotifier {
     if (_setTaskUseCase == null) {
       throw Exception('SetTaskUseCase not set');
     }
-    final task = buildTask(recurrenceRule: generateRecurrenceRule());
+
+    final recurrenceRule =
+        recurrenceBm.isRepeating ? recurrenceBm.generateRecurrenceRule() : null;
+
+    final task = buildTask(recurrenceRule: recurrenceRule);
     await _setTaskUseCase!.execute(task);
     if (!context.mounted) return;
     ScaffoldMessenger.of(context)
@@ -273,55 +157,37 @@ class ManageTaskViewModel extends ChangeNotifier {
   }
 
   Task buildTask({String? recurrenceRule}) {
-    final DateTime start = isAllDay
-        ? startDate
-        : DateTime(startDate.year, startDate.month, startDate.day,
-            startTime.hour, startTime.minute);
-    final DateTime end = isAllDay
-        ? endDate
-        : DateTime(endDate.year, endDate.month, endDate.day, endTime.hour,
-            endTime.minute);
+    final DateTime start = basicBm.isAllDay
+        ? basicBm.startDate
+        : DateTime(
+            basicBm.startDate.year,
+            basicBm.startDate.month,
+            basicBm.startDate.day,
+            basicBm.startTime.hour,
+            basicBm.startTime.minute);
+    final DateTime end = basicBm.isAllDay
+        ? basicBm.endDate
+        : DateTime(basicBm.endDate.year, basicBm.endDate.month,
+            basicBm.endDate.day, basicBm.endTime.hour, basicBm.endTime.minute);
+
+    // Calculate proper duration
+    final duration = end.difference(start);
+    final durationString = basicBm.isAllDay
+        ? 'All Day'
+        : '${duration.inHours}h ${duration.inMinutes % 60}m';
 
     return Task(
       id: editingTaskId ?? DateTime.now().millisecondsSinceEpoch.toString(),
-      title: name,
-      description: description,
-      color: color,
+      title: basicBm.name,
+      description: basicBm.description,
+      color: basicBm.color,
       startDate: start,
       endDate: end,
-      isAllDay: isAllDay,
+      isAllDay: basicBm.isAllDay,
       recurrenceRule: recurrenceRule,
-      duration: durationType,
-      priority: priority,
-      category: category,
+      duration: durationString,
+      priority: basicBm.priority,
+      category: basicBm.category,
     );
-  }
-
-  String? generateRecurrenceRule() {
-    if (!isRepeating) return null;
-    const map = {1: 'MO', 2: 'TU', 3: 'WE', 4: 'TH', 5: 'FR', 6: 'SA', 7: 'SU'};
-    final parts = [
-      'FREQ=${repeatType.toUpperCase()}',
-      'INTERVAL=$repeatInterval'
-    ];
-    if (repeatType == 'Weekly') {
-      parts.add('BYDAY=${weeklyRepeatDays.map((d) => map[d]!).join(',')}');
-    } else if (repeatType == 'Monthly') {
-      parts.add('BYMONTHDAY=${monthlyRepeatDays.join(',')}');
-    } else if (repeatType == 'Yearly') {
-      parts.add('BYYEARDAY=${yearlyRepeatDays.join(',')}');
-    }
-
-    if (durationType == 'Until' && durationDate != null) {
-      final until = durationDate!
-          .toUtc()
-          .add(const Duration(days: 1))
-          .toIso8601String()
-          .split('T')[0];
-      parts.add('UNTIL=$until');
-    } else if (durationType == 'Count' && durationCount != null) {
-      parts.add('COUNT=$durationCount');
-    }
-    return 'RRULE:${parts.join(';')}';
   }
 }

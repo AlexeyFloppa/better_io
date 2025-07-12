@@ -25,7 +25,7 @@ class Task {
     required this.startDate,
     required this.endDate,
     required this.isAllDay,
-    required this.recurrenceRule,
+    this.recurrenceRule, // Remove 'required' since it's nullable
     this.recurrenceExceptionDates,
     required this.duration,
     required this.priority,

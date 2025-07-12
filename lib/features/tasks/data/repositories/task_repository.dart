@@ -48,8 +48,12 @@ class TaskRepository implements ITaskRepository {
       recurrenceRule: task.recurrenceRule,
       recurrenceExceptionDates: task.recurrenceExceptionDates,
       duration: task.duration,
-      priority: TaskPriorityExtension.fromString(task.priority),
-      category: TaskCategoryExtension.fromString(task.category),
+      priority: task.priority.isNotEmpty
+          ? TaskPriorityExtension.fromString(task.priority)
+          : TaskPriority.none,
+      category: task.category.isNotEmpty
+          ? TaskCategoryExtension.fromString(task.category)
+          : TaskCategory.general,
     );
   }
 
